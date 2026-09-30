@@ -1,0 +1,201 @@
+# luad-osimertinib-persisters-rnaseq
+# Run from repo root:  snakemake --use-conda --cores 8
+# Dry run first:       snakemake -n
+
+import pandas as pd
+
+configfile: "config/config.yaml"
+
+SAMPLES = pd.read_csv(config["samples"], sep="\t", dtype=str).set_index("sample", drop=False)
+SAMPLE_IDS = SAMPLES.index.tolist()
+READS = ["1", "2"]  # paired-end; set paired: false in config and adapt rules if SE
+
+
+def srr(wc):
+    return SAMPLES.loc[wc.sample, "srr"]
+
+
+rule all:
+    input:
+        "results/qc/multiqc_report.html",
+        "results/tables/deseq2_results.tsv",
+        "results/tables/fgsea_hallmark.tsv",
+        "results/tables/tcga_cox.tsv",
+
+
+# ---------------------------------------------------------------- download
+rule download_fastq:
+    output:
+        r1="data/raw/{sample}_1.fastq.gz",
+        r2="data/raw/{sample}_2.fastq.gz",
+    params:
+        srr=srr,
+        tmp="data/tmp/{sample}",
+    threads: 4
+    conda: "envs/sra.yaml"
+    log: "logs/download/{sample}.log"
+    shell:
+        """
+        mkdir -p {params.tmp}
+        prefetch {params.srr} -O {params.tmp} > {log} 2>&1
+        fasterq-dump {params.tmp}/{params.srr} --split-files -e {threads} -O {params.tmp} >> {log} 2>&1
+        pigz -p {threads} -c {params.tmp}/{params.srr}_1.fastq > {output.r1}
+        pigz -p {threads} -c {params.tmp}/{params.srr}_2.fastq > {output.r2}
+        rm -rf {params.tmp}
+        """
+
+
+# ---------------------------------------------------------------- QC + trim
+rule fastqc_raw:
+    input: "data/raw/{sample}_{read}.fastq.gz"
+    output:
+        html="results/qc/fastqc/{sample}_{read}_fastqc.html",
+        zip="results/qc/fastqc/{sample}_{read}_fastqc.zip",
+    threads: 2
+    conda: "envs/qc.yaml"
+    log: "logs/fastqc/{sample}_{read}.log"
+    shell: "fastqc -t {threads} -o results/qc/fastqc {input} > {log} 2>&1"
+
+
+rule fastp:
+    input:
+        r1="data/raw/{sample}_1.fastq.gz",
+        r2="data/raw/{sample}_2.fastq.gz",
+    output:
+        r1="data/trimmed/{sample}_1.fastq.gz",
+        r2="data/trimmed/{sample}_2.fastq.gz",
+        json="results/qc/fastp/{sample}.fastp.json",
+        html="results/qc/fastp/{sample}.fastp.html",
+    threads: 4
+    conda: "envs/qc.yaml"
+    log: "logs/fastp/{sample}.log"
+    shell:
+        """
+        fastp -i {input.r1} -I {input.r2} -o {output.r1} -O {output.r2} \
+              --detect_adapter_for_pe --qualified_quality_phred 20 --length_required 25 \
+              -w {threads} -j {output.json} -h {output.html} > {log} 2>&1
+        """
+
+
+# ---------------------------------------------------------------- reference
+rule get_transcriptome:
+    output: "resources/transcripts.fa.gz"
+    params: url=config["transcriptome_url"]
+    log: "logs/ref/transcriptome.log"
+    shell: "wget -q -O {output} {params.url} 2> {log}"
+
+
+rule tx2gene:
+    input: "resources/transcripts.fa.gz"
+    output: "resources/tx2gene.tsv"
+    # GENCODE headers: ENST|ENSG|...|...|...|transcript_name|gene_name|...
+    shell:
+        """
+        zcat {input} | grep '^>' | sed 's/^>//' \
+          | awk -F'|' 'BEGIN{{OFS="\\t"; print "tx","gene_id","gene_name"}} {{print $1,$2,$6}}' > {output}
+        """
+
+
+rule salmon_index:
+    input: "resources/transcripts.fa.gz"
+    output: directory("resources/salmon_index")
+    threads: 8
+    conda: "envs/salmon.yaml"
+    log: "logs/ref/salmon_index.log"
+    shell: "salmon index -t {input} -i {output} --gencode -k 31 -p {threads} > {log} 2>&1"
+
+
+# ---------------------------------------------------------------- quantify
+rule salmon_quant:
+    input:
+        r1="data/trimmed/{sample}_1.fastq.gz",
+        r2="data/trimmed/{sample}_2.fastq.gz",
+        index="resources/salmon_index",
+    output: "results/salmon/{sample}/quant.sf"
+    params: outdir="results/salmon/{sample}"
+    threads: 8
+    conda: "envs/salmon.yaml"
+    log: "logs/salmon/{sample}.log"
+    shell:
+        """
+        salmon quant -i {input.index} -l A -1 {input.r1} -2 {input.r2} \
+              --validateMappings --gcBias --seqBias -p {threads} -o {params.outdir} > {log} 2>&1
+        """
+
+
+rule multiqc:
+    input:
+        expand("results/qc/fastqc/{sample}_{read}_fastqc.zip", sample=SAMPLE_IDS, read=READS),
+        expand("results/qc/fastp/{sample}.fastp.json", sample=SAMPLE_IDS),
+        expand("results/salmon/{sample}/quant.sf", sample=SAMPLE_IDS),
+    output: "results/qc/multiqc_report.html"
+    conda: "envs/qc.yaml"
+    log: "logs/multiqc.log"
+    shell: "multiqc results/qc results/salmon -o results/qc -f > {log} 2>&1"
+
+
+# ---------------------------------------------------------------- R analysis
+rule tximport:
+    input:
+        quants=expand("results/salmon/{sample}/quant.sf", sample=SAMPLE_IDS),
+        tx2gene="resources/tx2gene.tsv",
+        samples=config["samples"],
+    output: "results/rds/txi.rds"
+    conda: "envs/r.yaml"
+    log: "logs/r/tximport.log"
+    script: "scripts/01_tximport.R"
+
+
+rule deseq2:
+    input:
+        txi="results/rds/txi.rds",
+        samples=config["samples"],
+        tx2gene="resources/tx2gene.tsv",
+    output:
+        res="results/tables/deseq2_results.tsv",
+        dds="results/rds/dds.rds",
+        pca="results/figures/fig2_pca.pdf",
+        volcano="results/figures/fig3_volcano.pdf",
+        heatmap="results/figures/fig3b_heatmap.pdf",
+    params:
+        alpha=config["deseq2"]["alpha"],
+        lfc=config["deseq2"]["lfc_threshold"],
+    conda: "envs/r.yaml"
+    log: "logs/r/deseq2.log"
+    script: "scripts/02_deseq2.R"
+
+
+rule enrichment:
+    input:
+        res="results/tables/deseq2_results.tsv",
+    output:
+        fgsea="results/tables/fgsea_hallmark.tsv",
+        fig="results/figures/fig4_fgsea.pdf",
+    params: seed=config["seed"]
+    conda: "envs/r.yaml"
+    log: "logs/r/enrichment.log"
+    script: "scripts/03_enrichment.R"
+
+
+rule tcga_download:
+    output:
+        expr="resources/tcga_luad/expr_vst.rds",
+        clin="resources/tcga_luad/clinical.tsv",
+    conda: "envs/r.yaml"
+    log: "logs/r/tcga_download.log"
+    script: "scripts/04_tcga_download.R"
+
+
+rule survival:
+    input:
+        res="results/tables/deseq2_results.tsv",
+        expr="resources/tcga_luad/expr_vst.rds",
+        clin="resources/tcga_luad/clinical.tsv",
+    output:
+        cox="results/tables/tcga_cox.tsv",
+        km="results/figures/fig5_km.pdf",
+    params:
+        n_genes=config["signature"]["n_genes"],
+    conda: "envs/r.yaml"
+    log: "logs/r/survival.log"
+    script: "scripts/05_survival.R"

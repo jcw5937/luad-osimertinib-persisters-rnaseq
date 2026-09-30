@@ -1,0 +1,7 @@
+sample	srr	gsm	condition	replicate
+PC9_DMSO_1	SRR_TODO	GSM_TODO	parental	1
+PC9_DMSO_2	SRR_TODO	GSM_TODO	parental	2
+PC9_DMSO_3	SRR_TODO	GSM_TODO	parental	3
+PC9_OSI9_1	SRR_TODO	GSM_TODO	persister	1
+PC9_OSI9_2	SRR_TODO	GSM_TODO	persister	2
+PC9_OSI9_3	SRR_TODO	GSM_TODO	persister	3

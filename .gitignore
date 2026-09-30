@@ -1,0 +1,9 @@
+data/
+resources/
+results/salmon/
+results/rds/
+results/qc/fastqc/
+logs/
+.snakemake/
+*.Rhistory
+.DS_Store

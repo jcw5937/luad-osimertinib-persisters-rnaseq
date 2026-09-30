@@ -1,0 +1,15 @@
+samples: "config/samples.tsv"
+paired: true
+seed: 42
+
+# GENCODE human transcriptome; pin one release and never change it mid-project
+gencode_release: 46
+transcriptome_url: "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_46/gencode.v46.transcripts.fa.gz"
+
+deseq2:
+  alpha: 0.05          # FDR (Benjamini-Hochberg)
+  lfc_threshold: 1     # tested with lfcThreshold, not a post-hoc filter
+  reference_level: "parental"
+
+signature:
+  n_genes: 25          # top up-regulated persister genes scored in TCGA-LUAD
