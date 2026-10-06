@@ -27,7 +27,7 @@ Source material for the README's Methods, Results and Limitations sections.
 - **2026-09-30 · [assumed]** Dataset: the PC9 subset of GEO GSE255958 (parental vs osimertinib persisters).
   Why: EGFR-mutant LUAD, a standard drug, a clean two-group design, and a timely topic (residual disease). Subsetting 6 of 82 samples also shows real metadata curation.
   Rejected: GSE153183 (2 vs 2, too few to estimate variability per gene); GSE149246 (8 samples split across two comparisons).
-- **2026-10-06 · [assumed]** Samples: clean 3 vs 3. Parental GSM8083374–376 (0.1% DMSO, 48 h) vs persister GSM8083380–382 (osimertinib 2 µM, 9 days).
+- **2026-10-06 · [confirmed]** Samples: clean 3 vs 3. Parental GSM8083374–376 (0.1% DMSO, 48 h) vs persister GSM8083380–382 (osimertinib 2 µM, 9 days).
   Why: these controls and persisters sit in one block of IDs, so they were most likely processed together (same batch).
   Rejected: persister set GSM8083426–428 (separately labeled, likely another batch, so it would mix batch with treatment); all 6 persisters vs 3 controls (batch and group become tangled and can't be separated); the 48 h acute samples GSM8083377–379 (not needed for parental vs persister; kept as an extension).
 
@@ -81,7 +81,7 @@ Source material for the README's Methods, Results and Limitations sections.
 - **2026-10-05 · [confirmed]** Build the website in six milestones, one Claude Code session each, committing after each passes its check.
 - **2026-10-06 · [confirmed]** `CLAUDE.md` holds the project rules for Claude Code, including: explain any statistical choice before writing the code for it.
 - **2026-10-06 · [assumed]** Vibe code the website freely; don't accept pipeline or statistics code that can't be explained (interviewers will ask about it).
-- **2026-10-06 · [assumed]** `.claude/settings.local.json` (personal permission approvals) stays out of git.
+- **2026-10-06 · [assumed]** `.claude/settings.local.json` (personal permission approvals) stays out of git. Added to `.gitignore` (commit 70b0172).
 - **2026-10-06 · [confirmed]** Keep this decision log in the repo, organized by section, with dates on each entry.
 - **2026-10-05 · [confirmed]** Timeline: ~4 weeks of numbered working days (15 analysis + 4 website); Jake has more time available, so it can run faster.
 
@@ -97,10 +97,10 @@ Source material for the README's Methods, Results and Limitations sections.
 | 2026-10-06 | Sample metadata from the GSE255958 series matrix | Identify exactly which 6 samples to use and their read files | passed: 6 PC9 samples found |
 | 2026-10-06 | Library layout and read length | Pipeline assumes paired-end | passed: PAIRED, 2 × 150 bp |
 | 2026-10-06 | One run (SRR) per experiment (SRX) | Multiple runs per sample would need merging | passed: one each, no merging |
-| 2026-10-06 | GSM ↔ SRR pairing done by row, not by order | SRR numbers descend while GSM numbers ascend, an easy place to swap samples | planned (when filling samples.tsv) |
+| 2026-10-06 | GSM ↔ SRR pairing done by row, not by order | SRR numbers descend while GSM numbers ascend, an easy place to swap samples | passed: samples.tsv matches the provenance table (commit 70b0172) |
 | 2026-10-06 | Spot-check SRR27989626 on the SRA website | IDs were found by Claude Code, not yet independently verified | planned |
-| 2026-10-06 | Review of Claude Code's site export script | No result may be hard-coded | failed: headline always said "worse overall survival"; fix requested |
-| 2026-10-06 | Plain-language review of Claude Code's statistics edits (`git diff`) | Every statistical choice must be explainable before commit | pending |
+| 2026-10-06 | Review of Claude Code's site export script | No result may be hard-coded | failed, then fixed: headline always said "worse overall survival"; now built from the adjusted HR's 95% CI (commit 70b0172) |
+| 2026-10-06 | Plain-language review of Claude Code's statistics edits | Every statistical choice must be explainable | pending: edits were committed in 70b0172; review them with `git show 70b0172` |
 | Week 1 | FastQC / fastp reports: adapters, duplication, quality | Catch bad samples before quantification | planned |
 | Week 1 | salmon mapping rate and inferred library type | Flag samples far below the others; confirm strandedness | planned |
 | Week 2 | Size factors, dispersion plot, sample-distance heatmap | Sanity of normalization and variability estimates | planned |
@@ -161,7 +161,7 @@ All paired-end, 2 × 150 bp, one run per sample.
 
 ## 5. Open questions and extensions
 
-- **2026-10-06 · open** Confirm the 3 vs 3 sample set to Claude Code and fill `config/samples.tsv`.
+- **2026-10-06 · done** 3 vs 3 sample set confirmed and `config/samples.tsv` filled (commit 70b0172).
 - **2026-10-06 · open** Spot-check one SRR on the SRA website.
 - **2026-10-06 · extension** Second persister set GSM8083426–428: find out whether it has its own matched controls. If so, rerun the comparison there as an independent replication.
 - **2026-10-06 · extension** 48 h acute osimertinib samples GSM8083377–379: a three-group design (control, acute, persister). Control vs acute is time-matched (both 48 h), so it isolates the drug's immediate effect; persister vs acute shows what changes as cells become persisters.
