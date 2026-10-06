@@ -50,7 +50,7 @@ img, canvas { display: block; max-width: 100%; }
   z-index: 1;
   display: flex;
   flex-direction: row;
-  align-items: stretch;
+  align-items: flex-start;
   gap: var(--sp-12);
   padding: var(--sp-8) var(--sp-6);
   margin-left: clamp(var(--sp-6), 8vw, 10rem);
@@ -209,11 +209,10 @@ img, canvas { display: block; max-width: 100%; }
 .helix-controls {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;   /* push to bottom of the hero text column */
   gap: var(--sp-3);
   flex-shrink: 0;
-  padding-left: var(--sp-4);   /* slight rightward indent */
-  padding-bottom: var(--sp-1);
+  padding-left: var(--sp-4);
+  margin-top: var(--sp-16);    /* push sliders well below the nav */
 }
 
 .helix-ctrl {
