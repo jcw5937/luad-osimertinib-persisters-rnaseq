@@ -1,0 +1,225 @@
+/* ── Reset ─────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+}
+a { color: inherit; }
+img, canvas { display: block; max-width: 100%; }
+
+/* ── Exhibit hall (dark) ───────────────────────────────────────── */
+.hall {
+  position: relative;
+  min-height: 100svh;
+  background: var(--color-hall-bg);
+  color: var(--color-hall-text);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.hall__canvas-wrap {
+  position: absolute;
+  inset: 0;
+}
+
+#hero-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* CSS fallback shown when WebGL is unavailable or motion is reduced */
+.hall__webgl-fallback {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 50%, var(--color-purple-dark) 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 50%, var(--color-teal-dark)   0%, transparent 55%),
+    var(--color-hall-bg);
+}
+
+.hall.no-webgl .hall__webgl-fallback { display: block; }
+.hall.no-webgl #hero-canvas          { display: none; }
+
+.hall__content {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  padding: var(--sp-8) var(--sp-6);
+  margin-left: clamp(var(--sp-6), 8vw, 10rem);
+}
+
+.hall__eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-teal-light);
+  margin-bottom: var(--sp-3);
+  font-family: var(--font-mono);
+}
+
+.hall__title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: var(--sp-4);
+  background: linear-gradient(135deg, var(--color-hall-text) 0%, var(--color-purple-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hall__subtitle {
+  font-size: 1.05rem;
+  color: var(--color-hall-muted);
+  max-width: 52ch;
+  margin-bottom: var(--sp-8);
+}
+
+.hall__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+.hall__nav a {
+  padding: var(--sp-2) var(--sp-4);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: background .2s, border-color .2s;
+}
+
+.hall__nav a:hover,
+.hall__nav a:focus-visible {
+  background: rgba(255,255,255,.08);
+  border-color: var(--color-teal);
+  outline: none;
+}
+
+/* ── Results section (light) ───────────────────────────────────── */
+.results {
+  background: var(--color-bg);
+}
+
+.section {
+  padding: var(--sp-16) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.section:last-child { border-bottom: none; }
+
+.section__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 var(--sp-6);
+}
+
+.section h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: var(--sp-2);
+}
+
+.section__desc {
+  color: var(--color-muted);
+  margin-bottom: var(--sp-6);
+  font-size: 0.95rem;
+}
+
+/* ── Cards ─────────────────────────────────────────────────────── */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-8);
+  box-shadow: var(--shadow-card);
+}
+
+/* ── Chart containers ──────────────────────────────────────────── */
+.chart-wrap {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Placeholder ───────────────────────────────────────────────── */
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-12);
+  color: var(--color-muted);
+  text-align: center;
+}
+
+.placeholder__icon  { font-size: 2rem; opacity: .4; }
+.placeholder__text  { font-size: 0.9rem; }
+
+/* ── Summary stats ─────────────────────────────────────────────── */
+.summary-headline {
+  font-size: 1.1rem;
+  max-width: 65ch;
+  margin-bottom: var(--sp-6);
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--sp-6);
+}
+
+.stat-item__value {
+  font-size: 2.25rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--color-teal-dark);
+  line-height: 1;
+  margin-bottom: var(--sp-1);
+}
+
+.stat-item__label {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── Footer ────────────────────────────────────────────────────── */
+.site-footer {
+  background: var(--color-hall-bg);
+  color: var(--color-hall-muted);
+  text-align: center;
+  padding: var(--sp-8);
+  font-size: 0.85rem;
+}
+
+.site-footer a {
+  color: var(--color-teal-light);
+  text-decoration: none;
+}
+
+.site-footer a:hover { text-decoration: underline; }
+
+/* ── Responsive ────────────────────────────────────────────────── */
+@media (max-width: 400px) {
+  .hall__content {
+    margin-left: 0;
+    padding: var(--sp-6) var(--sp-4);
+  }
+  .hall__nav { gap: var(--sp-2); }
+  .section { padding: var(--sp-8) 0; }
+  .section__inner { padding: 0 var(--sp-4); }
+  .chart-wrap { min-height: 280px; }
+}

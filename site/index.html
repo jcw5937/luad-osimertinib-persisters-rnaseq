@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Surviving Osimertinib — LUAD RNA-seq</title>
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/main.css">
+
+  <!-- three.js 0.186.1 via ES module import map -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three":          "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js",
+      "three/addons/":  "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+    }
+  }
+  </script>
+
+  <!-- 3Dmol.js 2.5.5 (classic script, used for future molecular detail panels) -->
+  <script src="https://cdn.jsdelivr.net/npm/3dmol@2.5.5/build/3Dmol-min.js" defer></script>
+
+  <!-- Plotly.js 4.1.2 -->
+  <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@4.1.2/plotly.js" defer></script>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       EXHIBIT HALL — dark
+       ═══════════════════════════════════════════════════════════ -->
+  <header class="hall" id="hall" aria-label="Project introduction">
+
+    <div class="hall__canvas-wrap" id="hall-canvas-wrap">
+      <canvas id="hero-canvas" aria-hidden="true"></canvas>
+      <!-- CSS gradient fallback: shown when WebGL is unavailable
+           or prefers-reduced-motion is set -->
+      <div class="hall__webgl-fallback" id="hall-fallback" aria-hidden="true"></div>
+    </div>
+
+    <div class="hall__content">
+      <p class="hall__eyebrow">GEO GSE255958 &middot; PC9 LUAD</p>
+      <h1 class="hall__title">Surviving Osimertinib</h1>
+      <p class="hall__subtitle">
+        How lung cancer cells persist through third-generation EGFR inhibition —
+        a bulk RNA-seq analysis of drug-tolerant persisters
+        validated in TCGA-LUAD.
+      </p>
+      <nav class="hall__nav" aria-label="Jump to results section">
+        <a href="#summary">Summary</a>
+        <a href="#qc">QC</a>
+        <a href="#de">Differential Expression</a>
+        <a href="#pathways">Pathways</a>
+        <a href="#survival">Survival</a>
+      </nav>
+    </div>
+
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       RESULTS — light
+       ═══════════════════════════════════════════════════════════ -->
+  <main class="results" id="results">
+
+    <!-- Summary -->
+    <section class="section" id="summary">
+      <div class="section__inner">
+        <h2>Summary</h2>
+        <div class="card" id="summary-card"></div>
+      </div>
+    </section>
+
+    <!-- Quality Control -->
+    <section class="section" id="qc">
+      <div class="section__inner">
+        <h2>Quality Control</h2>
+        <p class="section__desc">
+          PCA of variance-stabilized counts (DESeq2 vst), colored by condition.
+          Well-separated clusters confirm a strong persister transcriptional state.
+        </p>
+        <div class="chart-wrap" id="qc-pca"></div>
+      </div>
+    </section>
+
+    <!-- Differential Expression -->
+    <section class="section" id="de">
+      <div class="section__inner">
+        <h2>Differential Expression</h2>
+        <p class="section__desc">
+          Volcano plot — persisters vs. DMSO control (DESeq2 Wald test, Benjamini-Hochberg).
+          <span style="color:var(--color-teal);font-weight:600">Teal</span> = up in persisters &nbsp;·&nbsp;
+          <span style="color:var(--color-purple);font-weight:600">Purple</span> = down in persisters.
+        </p>
+        <div class="chart-wrap" id="de-volcano"></div>
+      </div>
+    </section>
+
+    <!-- Top Gene Counts -->
+    <section class="section" id="counts">
+      <div class="section__inner">
+        <h2>Top Gene Counts</h2>
+        <p class="section__desc">
+          Normalized expression (median-of-ratios) for the most significant differentially
+          expressed genes, per sample.
+        </p>
+        <div class="chart-wrap" id="counts-chart"></div>
+      </div>
+    </section>
+
+    <!-- Pathway Enrichment -->
+    <section class="section" id="pathways">
+      <div class="section__inner">
+        <h2>Pathway Enrichment</h2>
+        <p class="section__desc">
+          Gene set enrichment analysis (fgsea, Hallmark gene sets, 1&thinsp;000 permutations).
+          Positive NES = enriched in persisters; negative = depleted.
+        </p>
+        <div class="chart-wrap" id="pathways-chart"></div>
+      </div>
+    </section>
+
+    <!-- TCGA Survival -->
+    <section class="section" id="survival">
+      <div class="section__inner">
+        <h2>TCGA-LUAD Survival</h2>
+        <p class="section__desc">
+          Kaplan-Meier curves stratified by persister gene-signature score in TCGA-LUAD
+          (median split). Cox proportional-hazards model adjusted for stage and age.
+        </p>
+        <div class="chart-wrap" id="survival-chart"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      Data:
+      <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE255958"
+         target="_blank" rel="noopener">GEO GSE255958</a>
+      &nbsp;&middot;&nbsp;
+      <a href="https://portal.gdc.cancer.gov/" target="_blank" rel="noopener">TCGA-LUAD via GDC</a>
+    </p>
+  </footer>
+
+  <!-- ES modules (scene.js imports three; charts.js uses Plotly from global) -->
+  <script type="module" src="js/scene.js"></script>
+  <script type="module" src="js/charts.js"></script>
+
+</body>
+</html>

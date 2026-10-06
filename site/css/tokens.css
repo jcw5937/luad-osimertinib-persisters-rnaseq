@@ -1,0 +1,51 @@
+/* ── Design tokens ───────────────────────────────────────────────────
+   Purple = untreated / lower in persisters
+   Teal   = persister  / higher in persisters
+   ──────────────────────────────────────────────────────────────────── */
+:root {
+  /* Brand */
+  --color-purple:       #8b5cf6;
+  --color-purple-dark:  #6d28d9;
+  --color-purple-light: #c4b5fd;
+  --color-teal:         #14b8a6;
+  --color-teal-dark:    #0d9488;
+  --color-teal-light:   #5eead4;
+
+  /* Exhibit hall (dark) */
+  --color-hall-bg:   #080c14;
+  --color-hall-text: #f1f5f9;
+  --color-hall-muted: #94a3b8;
+
+  /* Results section (light) */
+  --color-bg:      #f8fafc;
+  --color-surface: #ffffff;
+  --color-text:    #0f172a;
+  --color-muted:   #64748b;
+  --color-border:  #e2e8f0;
+
+  /* Semantic */
+  --color-up:   var(--color-teal);
+  --color-down: var(--color-purple);
+  --color-ns:   #94a3b8;
+
+  /* Typography */
+  --font-sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', monospace;
+
+  /* Spacing */
+  --sp-1:  0.25rem;
+  --sp-2:  0.5rem;
+  --sp-3:  0.75rem;
+  --sp-4:  1rem;
+  --sp-6:  1.5rem;
+  --sp-8:  2rem;
+  --sp-12: 3rem;
+  --sp-16: 4rem;
+
+  /* Shape */
+  --radius:    8px;
+  --radius-lg: 12px;
+
+  /* Shadow */
+  --shadow-card: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
+}
