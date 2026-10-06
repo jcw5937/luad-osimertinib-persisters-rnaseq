@@ -48,18 +48,9 @@ img, canvas { display: block; max-width: 100%; }
 .hall__content {
   position: relative;
   z-index: 1;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: var(--sp-12);
+  max-width: 680px;
   padding: var(--sp-8) var(--sp-6);
   margin-left: clamp(var(--sp-6), 8vw, 10rem);
-}
-
-.hall__text {
-  max-width: 520px;
-  display: flex;
-  flex-direction: column;
 }
 
 .hall__eyebrow {
@@ -86,7 +77,7 @@ img, canvas { display: block; max-width: 100%; }
   font-size: 1.05rem;
   color: var(--color-hall-muted);
   max-width: 52ch;
-  margin-bottom: var(--sp-8);
+  margin-bottom: var(--sp-6);  /* 24px to button row */
 }
 
 .hall__nav {
@@ -208,67 +199,71 @@ img, canvas { display: block; max-width: 100%; }
 /* ── Helix controls ────────────────────────────────────────────── */
 .helix-controls {
   display: flex;
-  flex-direction: column;
-  gap: var(--sp-3);
-  flex-shrink: 0;
-  padding-left: var(--sp-4);
-  margin-top: var(--sp-16);    /* push sliders well below the nav */
+  flex-direction: row;          /* both sliders on one row */
+  gap: var(--sp-ctrl-gap);      /* 32px apart */
+  margin-top: var(--sp-12);     /* 48px below the button row */
 }
 
 .helix-ctrl {
   display: flex;
-  align-items: center;
-  gap: var(--sp-3);
-  padding: var(--sp-2) var(--sp-4);
-  border: 1px solid rgba(255,255,255,.15);
-  border-radius: var(--radius);
-  font-size: 0.875rem;
-  color: var(--color-hall-text);
+  flex-direction: column;
+  gap: var(--sp-2);
   cursor: default;
-  transition: border-color .2s;
 }
 
-.helix-ctrl:focus-within {
-  border-color: var(--color-teal);
-}
-
-.helix-ctrl span {
-  width: 3rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
+/* Label: eyebrow style */
+.helix-ctrl__label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-hall-muted);
-  flex-shrink: 0;
+  color: var(--color-teal-light);
 }
 
+/* Track */
 .helix-ctrl input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
-  width: 100px;
-  height: 3px;
-  background: rgba(255,255,255,.18);
-  border-radius: 2px;
+  width: 120px;
+  height: 2px;
+  border-radius: 1px;
+  /* filled portion (--fill set by JS) in lavender; unfilled in border color */
+  background: linear-gradient(
+    to right,
+    var(--color-helix-fill) var(--fill, 17.5%),
+    var(--color-hall-border) var(--fill, 17.5%)
+  );
   outline: none;
   cursor: pointer;
+  /* prevent browser from overriding track color */
+  border: none;
 }
 
 .helix-ctrl input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: var(--color-teal-light);
+  background: var(--color-helix-fill);
   border: none;
-  box-shadow: 0 0 5px rgba(94,234,212,.45);
+  box-shadow: 0 0 0 2px rgba(196,181,253,.25);
 }
 
 .helix-ctrl input[type="range"]::-moz-range-thumb {
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: var(--color-teal-light);
+  background: var(--color-helix-fill);
   border: none;
-  box-shadow: 0 0 5px rgba(94,234,212,.45);
+  box-shadow: 0 0 0 2px rgba(196,181,253,.25);
+}
+
+/* Value readout: same mono eyebrow style */
+.helix-ctrl__val {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--color-hall-muted);
 }
 
 /* ── Footer ────────────────────────────────────────────────────── */
@@ -289,18 +284,8 @@ img, canvas { display: block; max-width: 100%; }
 
 /* ── Responsive ────────────────────────────────────────────────── */
 @media (max-width: 640px) {
-  .hall__content {
-    flex-direction: column;
-    margin-left: 0;
-    padding: var(--sp-6) var(--sp-4);
-    gap: var(--sp-4);
-  }
-  .helix-controls {
-    flex-direction: row;
-    justify-content: flex-start;
-    padding-left: 0;
-    gap: var(--sp-3);
-  }
+  .hall__content { margin-left: 0; padding: var(--sp-6) var(--sp-4); }
+  .helix-controls { gap: var(--sp-6); }
 }
 
 @media (max-width: 400px) {

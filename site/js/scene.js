@@ -145,13 +145,31 @@ buildHelix(currentTurns);
 /* ── Wire controls (markup is in index.html) ─────────────────── */
 let autoSpeed = 0.0007;
 
-document.getElementById('ctrl-speed').addEventListener('input', e => {
+function setFill(input) {
+  const pct = ((input.value - input.min) / (input.max - input.min) * 100).toFixed(1) + '%';
+  input.style.setProperty('--fill', pct);
+}
+
+const speedInput = document.getElementById('ctrl-speed');
+const turnsInput = document.getElementById('ctrl-turns');
+const speedOut   = speedInput.closest('.helix-ctrl').querySelector('.helix-ctrl__val');
+const turnsOut   = turnsInput.closest('.helix-ctrl').querySelector('.helix-ctrl__val');
+
+// Set initial fill on both tracks
+setFill(speedInput);
+setFill(turnsInput);
+
+speedInput.addEventListener('input', e => {
   autoSpeed = parseFloat(e.target.value);
+  speedOut.textContent = (autoSpeed * 1000).toFixed(1);
+  setFill(e.target);
 });
 
-document.getElementById('ctrl-turns').addEventListener('input', e => {
+turnsInput.addEventListener('input', e => {
   currentTurns = parseFloat(e.target.value);
+  turnsOut.textContent = currentTurns.toFixed(1);
   buildHelix(currentTurns);
+  setFill(e.target);
 });
 
 /* ── Resize ──────────────────────────────────────────────────── */
@@ -166,7 +184,7 @@ function syncSize() {
     helixGroup.position.x = 0;
     canvas.style.opacity  = '0.18';
   } else {
-    helixGroup.position.x = 3.5;
+    helixGroup.position.x = 2.7;
     canvas.style.opacity  = '1';
   }
 }

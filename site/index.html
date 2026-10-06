@@ -39,31 +39,31 @@
     </div>
 
     <div class="hall__content">
-      <div class="hall__text">
-        <p class="hall__eyebrow">GEO GSE255958 &middot; PC9 LUAD</p>
-        <h1 class="hall__title">Surviving Osimertinib</h1>
-        <p class="hall__subtitle">
-          How lung cancer cells persist through third-generation EGFR inhibition —
-          a bulk RNA-seq analysis of drug-tolerant persisters
-          validated in TCGA-LUAD.
-        </p>
-        <nav class="hall__nav" aria-label="Jump to results section">
-          <a href="#summary">Summary</a>
-          <a href="#qc">QC</a>
-          <a href="#de">Differential Expression</a>
-          <a href="#pathways">Pathways</a>
-          <a href="#survival">Survival</a>
-        </nav>
-      </div>
+      <p class="hall__eyebrow">GEO GSE255958 &middot; PC9 LUAD</p>
+      <h1 class="hall__title">Surviving Osimertinib</h1>
+      <p class="hall__subtitle">
+        How lung cancer cells persist through third-generation EGFR inhibition —
+        a bulk RNA-seq analysis of drug-tolerant persisters
+        validated in TCGA-LUAD.
+      </p>
+      <nav class="hall__nav" aria-label="Jump to results section">
+        <a href="#summary">Summary</a>
+        <a href="#qc">QC</a>
+        <a href="#de">Differential Expression</a>
+        <a href="#pathways">Pathways</a>
+        <a href="#survival">Survival</a>
+      </nav>
 
       <div class="helix-controls" aria-label="Helix display controls">
         <label class="helix-ctrl">
-          <span>Speed</span>
+          <span class="helix-ctrl__label">Speed</span>
           <input type="range" id="ctrl-speed" min="0" max="0.004" step="0.0001" value="0.0007">
+          <output class="helix-ctrl__val" for="ctrl-speed">0.7</output>
         </label>
         <label class="helix-ctrl">
-          <span>Turns</span>
+          <span class="helix-ctrl__label">Turns</span>
           <input type="range" id="ctrl-turns" min="1" max="6" step="0.1" value="3.2">
+          <output class="helix-ctrl__val" for="ctrl-turns">3.2</output>
         </label>
       </div>
     </div>

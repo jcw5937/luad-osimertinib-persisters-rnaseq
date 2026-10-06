@@ -48,4 +48,9 @@
 
   /* Shadow */
   --shadow-card: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
+
+  /* Helix controls */
+  --color-hall-border:  rgba(255,255,255,.15);  /* button/track border on dark bg */
+  --color-helix-fill:   var(--color-purple-light); /* lavender — matches title gradient */
+  --sp-ctrl-gap:        2rem;                   /* 32px between the two sliders */
 }
