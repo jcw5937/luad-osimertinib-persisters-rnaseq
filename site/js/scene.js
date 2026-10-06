@@ -142,21 +142,8 @@ function buildHelix(turns) {
 let currentTurns = 3.2;
 buildHelix(currentTurns);
 
-/* ── Inject controls ─────────────────────────────────────────── */
+/* ── Wire controls (markup is in index.html) ─────────────────── */
 let autoSpeed = 0.0007;
-
-const controls = document.createElement('div');
-controls.className = 'helix-controls';
-controls.innerHTML = `
-  <label class="helix-ctrl">
-    <span>Speed</span>
-    <input type="range" id="ctrl-speed" min="0" max="0.004" step="0.0001" value="${autoSpeed}">
-  </label>
-  <label class="helix-ctrl">
-    <span>Turns</span>
-    <input type="range" id="ctrl-turns" min="1" max="6" step="0.1" value="${currentTurns}">
-  </label>`;
-hall.appendChild(controls);
 
 document.getElementById('ctrl-speed').addEventListener('input', e => {
   autoSpeed = parseFloat(e.target.value);
@@ -179,7 +166,7 @@ function syncSize() {
     helixGroup.position.x = 0;
     canvas.style.opacity  = '0.18';
   } else {
-    helixGroup.position.x = 2.2;
+    helixGroup.position.x = 3.5;
     canvas.style.opacity  = '1';
   }
 }
