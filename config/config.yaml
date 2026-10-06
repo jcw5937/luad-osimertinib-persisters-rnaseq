@@ -13,3 +13,8 @@ deseq2:
 
 signature:
   n_genes: 25          # top up-regulated persister genes scored in TCGA-LUAD
+
+fgsea:
+  nperm: 1000
+  min_size: 15
+  max_size: 500

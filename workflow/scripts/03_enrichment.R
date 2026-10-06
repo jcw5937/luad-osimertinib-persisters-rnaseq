@@ -14,7 +14,10 @@ h <- tryCatch(msigdbr(species = "Homo sapiens", collection = "H"),
               error = function(e) msigdbr(species = "Homo sapiens", category = "H"))
 pathways <- split(h$gene_symbol, h$gs_name)
 
-fg <- fgsea(pathways, ranks, minSize = 15, maxSize = 500)[order(padj)]
+fg <- fgsea(pathways, ranks,
+            nPermSimple = snakemake@params$nperm,
+            minSize     = snakemake@params$min_size,
+            maxSize     = snakemake@params$max_size)[order(padj)]
 fg[, leadingEdge := vapply(leadingEdge, paste, "", collapse = ";")]
 fwrite(fg, snakemake@output$fgsea, sep = "\t")
 

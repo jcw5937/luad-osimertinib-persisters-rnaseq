@@ -40,7 +40,38 @@ p <- ggplot(pca, aes(PC1, PC2, colour = condition, label = name)) +
   theme_classic(base_size = 10)
 ggsave(snakemake@output$pca, p, width = 3.5, height = 3)
 
-# TODO Day 9: volcano (lfc_shrunk vs -log10 padj, label top 15 by padj)
-# TODO Day 9: heatmap of top 50 genes, row z-scored vst, annotated by condition
-pdf(snakemake@output$volcano); plot.new(); dev.off()
-pdf(snakemake@output$heatmap); plot.new(); dev.off()
+# Volcano: x = apeglm-shrunken LFC (cleaner for low-count genes); colour = Wald padj
+# We use lfc_shrunk for the visual but the unshrunken padj for significance — shrinkage
+# changes the point estimate, not the hypothesis test decision.
+vlim <- max(abs(out$lfc_shrunk), na.rm = TRUE) * 1.05
+top15 <- head(out[!is.na(padj)][order(padj)], 15)
+vol_df <- as.data.frame(out[!is.na(padj)])
+vol_df$sig <- vol_df$padj < snakemake@params$alpha
+
+p_vol <- ggplot(vol_df, aes(lfc_shrunk, -log10(padj), colour = sig)) +
+  geom_point(size = 0.8, alpha = 0.6) +
+  geom_text_repel(data = as.data.frame(top15), aes(label = gene_name),
+                  size = 2.5, max.overlaps = 20) +
+  scale_colour_manual(values = c("FALSE" = "#94a3b8", "TRUE" = "#14b8a6"),
+                      labels = c("NS", paste0("FDR < ", snakemake@params$alpha))) +
+  scale_x_continuous(limits = c(-vlim, vlim)) +
+  labs(x = "log\u2082 fold change (apeglm shrunk)", y = "-log\u2081\u2080 adjusted p-value",
+       colour = NULL, title = "Persister vs Parental") +
+  theme_classic(base_size = 10)
+ggsave(snakemake@output$volcano, p_vol, width = 4.5, height = 4)
+
+# Heatmap: top 50 genes by padj, row z-scored blind VST
+# blind = TRUE: dispersions estimated without condition grouping — appropriate for
+# unsupervised visualization; avoids artificially inflating the apparent separation.
+top50_ids <- head(out[!is.na(padj)][order(padj)], 50)$gene_id
+mat <- assay(vsd)[top50_ids, ]
+rownames(mat) <- out[match(top50_ids, gene_id)]$gene_name
+mat <- t(scale(t(mat)))                                       # row z-score
+ann_col <- data.frame(condition = vsd$condition, row.names = colnames(mat))
+ann_col$condition <- factor(ann_col$condition)
+ann_colors <- list(condition = c(parental = "#8b5cf6", persister = "#14b8a6"))
+pheatmap(mat, annotation_col = ann_col, annotation_colors = ann_colors,
+         show_colnames = TRUE, fontsize_row = 6, fontsize_col = 8,
+         color = colorRampPalette(c("#6d28d9","white","#0d9488"))(100),
+         breaks = seq(-3, 3, length.out = 101), border_color = NA,
+         filename = snakemake@output$heatmap, width = 5, height = 8)

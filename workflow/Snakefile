@@ -21,6 +21,8 @@ rule all:
         "results/tables/deseq2_results.tsv",
         "results/tables/fgsea_hallmark.tsv",
         "results/tables/tcga_cox.tsv",
+        expand("site/data/{f}.json",
+               f=["summary","qc","de","counts","pathways","survival"]),
 
 
 # ---------------------------------------------------------------- download
@@ -171,7 +173,11 @@ rule enrichment:
     output:
         fgsea="results/tables/fgsea_hallmark.tsv",
         fig="results/figures/fig4_fgsea.pdf",
-    params: seed=config["seed"]
+    params:
+        seed=config["seed"],
+        nperm=config["fgsea"]["nperm"],
+        min_size=config["fgsea"]["min_size"],
+        max_size=config["fgsea"]["max_size"],
     conda: "envs/r.yaml"
     log: "logs/r/enrichment.log"
     script: "scripts/03_enrichment.R"
@@ -194,8 +200,33 @@ rule survival:
     output:
         cox="results/tables/tcga_cox.tsv",
         km="results/figures/fig5_km.pdf",
+        clin_scored="results/tables/tcga_clin_scored.tsv",
+        cox_genes="results/tables/tcga_cox_per_gene.tsv",
     params:
         n_genes=config["signature"]["n_genes"],
     conda: "envs/r.yaml"
     log: "logs/r/survival.log"
     script: "scripts/05_survival.R"
+
+
+# ---------------------------------------------------------------- site export
+rule site_data:
+    input:
+        res="results/tables/deseq2_results.tsv",
+        fgsea="results/tables/fgsea_hallmark.tsv",
+        cox="results/tables/tcga_cox.tsv",
+        clin_scored="results/tables/tcga_clin_scored.tsv",
+        dds="results/rds/dds.rds",
+    output:
+        summary="site/data/summary.json",
+        qc="site/data/qc.json",
+        de="site/data/de.json",
+        counts="site/data/counts.json",
+        pathways="site/data/pathways.json",
+        survival="site/data/survival.json",
+    params:
+        alpha=config["deseq2"]["alpha"],
+        n_sig_genes=config["signature"]["n_genes"],
+    conda: "envs/r.yaml"
+    log: "logs/r/export_site.log"
+    script: "scripts/06_export_site.R"

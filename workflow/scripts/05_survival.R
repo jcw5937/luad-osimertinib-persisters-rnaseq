@@ -33,4 +33,22 @@ g <- ggsurvplot(fit, data = clin, pval = TRUE, risk.table = TRUE, xlab = "Years"
                 legend.labs = c("Low score", "High score"), ggtheme = theme_classic(base_size = 10))
 pdf(snakemake@output$km, width = 4.5, height = 4.5, onefile = FALSE); print(g); dev.off()
 
-# TODO Day 12: per-gene Cox for each signature gene, BH-adjusted -> supplementary table
+# Save scored clinical table for the site JSON export
+fwrite(clin[, .(sample, patient, os_time, os_event, age, stage, group, score)],
+       snakemake@output$clin_scored, sep = "\t")
+
+# Per-gene Cox: univariate model per signature gene, BH-adjusted p-values
+# Exploratory, not confirmatory — provides gene-level evidence for the signature.
+per_gene <- rbindlist(lapply(genes, function(g) {
+  clin_g <- copy(clin)
+  clin_g[, expr := scale(expr[g, sample])[, 1]]
+  m <- tryCatch(coxph(Surv(os_time, os_event) ~ expr, data = clin_g), error = function(e) NULL)
+  if (is.null(m)) return(NULL)
+  s <- summary(m)$conf.int[1, , drop = FALSE]
+  data.table(gene_id = g, HR = s[, 1], lo95 = s[, 3], hi95 = s[, 4],
+             p = summary(m)$coefficients[1, 5])
+}))
+per_gene[, padj := p.adjust(p, method = "BH")]
+per_gene <- merge(per_gene, unique(res[, .(gene_id, gene_name)]), by = "gene_id")[order(padj)]
+fwrite(per_gene, snakemake@output$cox_genes, sep = "\t")
+message("Per-gene Cox: ", sum(per_gene$padj < 0.05, na.rm = TRUE), " genes FDR < 0.05")
