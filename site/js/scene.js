@@ -186,7 +186,7 @@ function syncSize() {
 }
 
 /* ── Rotation / drag state ───────────────────────────────────── */
-const AUTO_SPEED = 0.003;
+const AUTO_SPEED = 0.0015;
 let autoRotate = true;
 let dragging   = false;
 let lastX      = 0;
