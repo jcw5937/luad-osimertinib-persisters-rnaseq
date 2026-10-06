@@ -75,6 +75,8 @@ Source material for the README's Methods, Results and Limitations sections.
 - **2026-10-05 · [assumed]** Libraries pinned from cdn.jsdelivr.net: three.js 0.186.1, 3Dmol.js 2.5.5, Plotly.js 4.1.2.
 - **2026-10-05 · [assumed]** Hosting: GitHub Pages from `/docs`; Snakemake rules `site_data` (R script writes the JSON) and `website` (copies `site/` to `docs/`).
 - **2026-10-06 · [assumed]** The site headline is generated from the adjusted hazard ratio and its 95% CI: "worse" if the CI is above 1, "better" if below 1, "no clear association" if it crosses 1.
+- **2026-10-06 · [confirmed]** ~~Hero helix used purple/teal brand colors for the backbones, placed the helix centrally (overlapping title text on wide screens), had diametrically opposite strands (no groove asymmetry), and used translucent white rungs with no base identity.~~ **Replaced by:** B-DNA helix (2026-10-06, this commit).
+  What changed: (1) Both backbone strands and phosphate nodes are neutral light grey (`#b0b8c8`) — purple/teal are reserved for data. (2) Strand 2 is offset 150° (5π/6) from strand 1, producing a visible major/minor groove as in canonical B-form. (3) Base pairs are two abutting half-cylinders colored by nucleotide identity: A=sage `#72b082`, T=amber `#c49050`, G=steel blue `#6090b8`, C=mauve `#9a7eb0`; no diagonal links. (4) On wide screens (>640 px) the helix shifts right so it never overlaps the hero text; on narrow screens it centers and fades to 0.18 opacity behind the text. (5) Lighting changed to neutral white/cool directional lights only (no colored point lights).
 
 ### Way of working
 - **2026-09-30 · [confirmed]** Plan in Claude chat; build with Claude Code ("vibe coding").
@@ -110,6 +112,7 @@ Source material for the README's Methods, Results and Limitations sections.
 | Week 3 | Proportional-hazards assumption (`cox.zph`) | Cox model validity | planned |
 | Week 3 | Fresh clone + fresh conda run on subset data | Proves the pipeline reproduces with no manual steps | planned |
 | Website | Each milestone at 400 px and desktop width, no console errors; drag the 3D models by hand | Claude Code can't see the browser | planned |
+| 2026-10-06 | Visual check of B-DNA helix at localhost:8000: grooves visible, base colors distinct, helix in right half at desktop width, fades behind text at 400 px | Structural accuracy and layout after the helix rework | pending |
 
 ---
 

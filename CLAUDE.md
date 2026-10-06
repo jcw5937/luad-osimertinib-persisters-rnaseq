@@ -31,3 +31,8 @@ Pipeline: Snakemake (workflow/), config in config/. Ends in a results website (s
 ## Working rules
 - Explain any statistical choice before writing the code for it.
 - Keep every threshold and seed in config/config.yaml.
+
+## Decision log
+- Record every decision, check and limitation in notes/decision-log.md under its
+  section, dated and marked [confirmed] or [assumed]. Follow the conventions at the
+  top of that file. Mark replaced decisions instead of deleting them.
