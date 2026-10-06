@@ -209,32 +209,43 @@ img, canvas { display: block; max-width: 100%; }
 .helix-controls {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: flex-end;   /* push to bottom of the hero text column */
+  gap: var(--sp-3);
   flex-shrink: 0;
+  padding-left: var(--sp-4);   /* slight rightward indent */
+  padding-bottom: var(--sp-1);
 }
 
 .helix-ctrl {
   display: flex;
   align-items: center;
   gap: var(--sp-3);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-hall-muted);
-  font-family: var(--font-mono);
+  padding: var(--sp-2) var(--sp-4);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  color: var(--color-hall-text);
   cursor: default;
+  transition: border-color .2s;
+}
+
+.helix-ctrl:focus-within {
+  border-color: var(--color-teal);
 }
 
 .helix-ctrl span {
-  width: 3.5rem;
-  text-align: right;
+  width: 3rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-hall-muted);
   flex-shrink: 0;
 }
 
 .helix-ctrl input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
-  width: 110px;
+  width: 100px;
   height: 3px;
   background: rgba(255,255,255,.18);
   border-radius: 2px;
@@ -244,21 +255,21 @@ img, canvas { display: block; max-width: 100%; }
 
 .helix-ctrl input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
   background: var(--color-teal-light);
   border: none;
-  box-shadow: 0 0 6px rgba(94,234,212,.5);
+  box-shadow: 0 0 5px rgba(94,234,212,.45);
 }
 
 .helix-ctrl input[type="range"]::-moz-range-thumb {
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
   background: var(--color-teal-light);
   border: none;
-  box-shadow: 0 0 6px rgba(94,234,212,.5);
+  box-shadow: 0 0 5px rgba(94,234,212,.45);
 }
 
 /* ── Footer ────────────────────────────────────────────────────── */
@@ -283,11 +294,13 @@ img, canvas { display: block; max-width: 100%; }
     flex-direction: column;
     margin-left: 0;
     padding: var(--sp-6) var(--sp-4);
-    gap: var(--sp-6);
+    gap: var(--sp-4);
   }
   .helix-controls {
     flex-direction: row;
-    gap: var(--sp-6);
+    justify-content: flex-start;
+    padding-left: 0;
+    gap: var(--sp-3);
   }
 }
 
