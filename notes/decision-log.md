@@ -39,6 +39,7 @@ Source material for the README's Methods, Results and Limitations sections.
   Why no decoys: simpler and lighter on memory for a laptop (noted as a limitation).
 - **2026-09-30 · [assumed]** salmon quant with `--validateMappings --gcBias --seqBias`, library type auto-detected (`-l A`).
 - **2026-09-30 · [assumed]** Raw data and large intermediate files stay out of git; everything rebuilds from `snakemake --use-conda`.
+- **2026-10-07 · [confirmed]** ~~`sra-tools=3.1` in `workflow/envs/sra.yaml`.~~ **Replaced by:** `sra-tools=3.4.1`. No osx-arm64 build of 3.1 exists on bioconda or conda-forge; earliest arm64 build is 3.2.1, latest is 3.4.1. Pinned to 3.4.1 for reproducibility. Low risk: sra-tools only downloads and converts raw reads; it does not alter data values.
 - **2026-09-30 · [assumed]** Every threshold and seed lives in `config/config.yaml`, never in code. Seed = 42.
 
 ### Statistics
@@ -101,6 +102,7 @@ Source material for the README's Methods, Results and Limitations sections.
 | 2026-10-06 | One run (SRR) per experiment (SRX) | Multiple runs per sample would need merging | passed: one each, no merging |
 | 2026-10-06 | GSM ↔ SRR pairing done by row, not by order | SRR numbers descend while GSM numbers ascend, an easy place to swap samples | passed: samples.tsv matches the provenance table (commit 70b0172) |
 | 2026-10-06 | Spot-check SRR27989626 on the SRA website | IDs were found by Claude Code, not yet independently verified | planned |
+| 2026-10-07 | PC9_DMSO_1 download: gzip integrity, R1 = R2 read count, read name spot-check | Confirms the first sample landed intact before running the other five | passed: gzip intact; R1 = R2 = 24,531,456 reads (= SRA spots); 150 bp; read names match |
 | 2026-10-06 | Review of Claude Code's site export script | No result may be hard-coded | failed, then fixed: headline always said "worse overall survival"; now built from the adjusted HR's 95% CI (commit 70b0172) |
 | 2026-10-06 | Plain-language review of Claude Code's statistics edits | Every statistical choice must be explainable | pending: edits were committed in 70b0172; review them with `git show 70b0172` |
 | Week 1 | FastQC / fastp reports: adapters, duplication, quality | Catch bad samples before quantification | planned |
@@ -128,6 +130,7 @@ Source material for the README's Methods, Results and Limitations sections.
 - **2026-10-06** Batch is inferred from adjacent GEO IDs, not documented by the authors.
 - **2026-09-30** Ensembl version suffixes are stripped to match GENCODE and TCGA IDs; a few genes may not map one-to-one.
 - **2026-09-30** Per-gene Cox results are exploratory.
+- **2026-10-07** Read headers in PC9_DMSO_1 (instrument K00124, flowcell BBXX) suggest Illumina HiSeq 4000, while GEO lists platform GPL24676 (NovaSeq 6000). Instrument does not affect the analysis, but warrants confirmation — see open question below.
 
 ---
 
@@ -165,6 +168,8 @@ All paired-end, 2 × 150 bp, one run per sample.
 ## 5. Open questions and extensions
 
 - **2026-10-06 · done** 3 vs 3 sample set confirmed and `config/samples.tsv` filled (commit 70b0172).
+- **2026-10-07 · open** Instrument discrepancy: read headers suggest HiSeq 4000 (K00124, flowcell BBXX); GEO lists NovaSeq 6000 (GPL24676). Confirm in SRA Run Selector for SRR27989632. Does not affect results, but should be documented correctly.
+- **2026-10-07 · note** First PC9_DMSO_1 download hung at finalization; Snakemake resume completed it. Use `caffeinate -i snakemake …` to prevent macOS sleep during long downloads.
 - **2026-10-06 · open** Spot-check one SRR on the SRA website.
 - **2026-10-06 · extension** Second persister set GSM8083426–428: find out whether it has its own matched controls. If so, rerun the comparison there as an independent replication.
 - **2026-10-06 · extension** 48 h acute osimertinib samples GSM8083377–379: a three-group design (control, acute, persister). Control vs acute is time-matched (both 48 h), so it isolates the drug's immediate effect; persister vs acute shows what changes as cells become persisters.
