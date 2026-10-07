@@ -103,6 +103,7 @@ Source material for the README's Methods, Results and Limitations sections.
 | 2026-10-06 | GSM ↔ SRR pairing done by row, not by order | SRR numbers descend while GSM numbers ascend, an easy place to swap samples | passed: samples.tsv matches the provenance table (commit 70b0172) |
 | 2026-10-06 | Spot-check SRR27989626 on the SRA website | IDs were found by Claude Code, not yet independently verified | planned |
 | 2026-10-07 | PC9_DMSO_1 download: gzip integrity, R1 = R2 read count, read name spot-check | Confirms the first sample landed intact before running the other five | passed: gzip intact; R1 = R2 = 24,531,456 reads (= SRA spots); 150 bp; read names match |
+| 2026-10-06 | All 5 remaining samples (PC9_DMSO_2/3, PC9_OSI9_1/2/3): gzip integrity, R1 = R2 | Confirms all 6 samples landed intact before QC | passed: all gzip intact; R1 = R2 for every sample; reads 20–25 M per sample |
 | 2026-10-06 | Review of Claude Code's site export script | No result may be hard-coded | failed, then fixed: headline always said "worse overall survival"; now built from the adjusted HR's 95% CI (commit 70b0172) |
 | 2026-10-06 | Plain-language review of Claude Code's statistics edits | Every statistical choice must be explainable | pending: edits were committed in 70b0172; review them with `git show 70b0172` |
 | Week 1 | FastQC / fastp reports: adapters, duplication, quality | Catch bad samples before quantification | planned |
@@ -159,7 +160,7 @@ All paired-end, 2 × 150 bp, one run per sample.
 
 **Software**
 - Snakemake 9.27.0 (conda env `smk`, Python 3.14.7), Miniforge, macOS 14.6.1 on Apple Silicon.
-- Pinned in workflow/envs: sra-tools 3.1, FastQC 0.12, fastp 0.23, MultiQC 1.25, salmon 1.10, R 4.4 with Bioconductor (tximport, DESeq2, apeglm, fgsea, TCGAbiolinks), survival, survminer.
+- Pinned in workflow/envs: sra-tools 3.4.1, FastQC 0.12, fastp 0.23, MultiQC 1.25, salmon 1.10, R 4.4 with Bioconductor (tximport, DESeq2, apeglm, fgsea, TCGAbiolinks), survival, survminer.
 - Website: three.js 0.186.1, 3Dmol.js 2.5.5, Plotly.js 4.1.2.
 - Repository: github.com/jcw5937/luad-osimertinib-persisters-rnaseq
 
