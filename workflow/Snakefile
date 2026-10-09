@@ -28,8 +28,8 @@ rule all:
 # ---------------------------------------------------------------- download
 rule download_fastq:
     output:
-        r1="data/raw/{sample}_1.fastq.gz",
-        r2="data/raw/{sample}_2.fastq.gz",
+        r1=protected("data/raw/{sample}_1.fastq.gz"),
+        r2=protected("data/raw/{sample}_2.fastq.gz"),
     params:
         srr=srr,
         tmp="data/tmp/{sample}",

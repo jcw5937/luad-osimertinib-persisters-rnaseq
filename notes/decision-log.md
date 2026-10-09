@@ -39,6 +39,8 @@ Source material for the README's Methods, Results and Limitations sections.
   Why no decoys: simpler and lighter on memory for a laptop (noted as a limitation).
 - **2026-09-30 · [assumed]** salmon quant with `--validateMappings --gcBias --seqBias`, library type auto-detected (`-l A`).
 - **2026-09-30 · [assumed]** Raw data and large intermediate files stay out of git; everything rebuilds from `snakemake --use-conda`.
+- **2026-10-09 · [confirmed]** Raw FASTQs in `data/raw/` are wrapped in `protected()` in the `download_fastq` rule. Snakemake marks them read-only on disk after creation and will never overwrite them.
+  Why: re-downloading 6 × ~5 GB SRA files takes ~20 min and risks losing verified data; protection makes this impossible.
 - **2026-10-07 · [confirmed]** ~~`sra-tools=3.1` in `workflow/envs/sra.yaml`.~~ **Replaced by:** `sra-tools=3.4.1`. No osx-arm64 build of 3.1 exists on bioconda or conda-forge; earliest arm64 build is 3.2.1, latest is 3.4.1. Pinned to 3.4.1 for reproducibility. Low risk: sra-tools only downloads and converts raw reads; it does not alter data values.
 - **2026-09-30 · [assumed]** Every threshold and seed lives in `config/config.yaml`, never in code. Seed = 42.
 
@@ -170,6 +172,7 @@ All paired-end, 2 × 150 bp, one run per sample.
 
 - **2026-10-06 · done** 3 vs 3 sample set confirmed and `config/samples.tsv` filled (commit 70b0172).
 - **2026-10-07 · open** Instrument discrepancy: read headers suggest HiSeq 4000 (K00124, flowcell BBXX); GEO lists NovaSeq 6000 (GPL24676). Confirm in SRA Run Selector for SRR27989632. Does not affect results, but should be documented correctly.
+- **2026-10-09 · note** A false "software environment definition has changed" trigger caused Snakemake to plan re-downloading all six samples after the `sra.yaml` bump, even though the env file was byte-identical at run time. Fixed with `snakemake --cleanup-metadata data/raw/*.fastq.gz`. Raw FASTQs are now `protected()` to prevent any future accidental re-download.
 - **2026-10-07 · note** First PC9_DMSO_1 download hung at finalization; Snakemake resume completed it. Use `caffeinate -i snakemake …` to prevent macOS sleep during long downloads.
 - **2026-10-09 · open** OSI9_1 duplication rate (15.7%) matches DMSO replicates (~16%) rather than OSI9_2/3 (~9%). Not a problem by itself, but check whether OSI9_1 clusters with the other persisters in PCA; if it sits between groups it may warrant investigation.
 - **2026-10-09 · note** Persister GC content is consistently ~0.8 pp higher than DMSO (50.5–50.7% vs 49.6–49.9%). This is a small, reproducible shift across all three replicates in each group and is most likely biological (transcriptome composition shift), not technical.
