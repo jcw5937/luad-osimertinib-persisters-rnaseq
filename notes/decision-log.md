@@ -109,7 +109,7 @@ Source material for the README's Methods, Results and Limitations sections.
 | 2026-10-06 | Review of Claude Code's site export script | No result may be hard-coded | failed, then fixed: headline always said "worse overall survival"; now built from the adjusted HR's 95% CI (commit 70b0172) |
 | 2026-10-06 | Plain-language review of Claude Code's statistics edits | Every statistical choice must be explainable | pending: edits were committed in 70b0172; review them with `git show 70b0172` |
 | 2026-10-09 | FastQC / fastp reports: adapters, duplication, quality, read retention | Catch bad samples before quantification | passed: Q30 92–95%, dup 9–16%, <2% reads lost per sample, GC 50% and consistent; no outliers; see open question on OSI9_1 duplication |
-| Week 1 | salmon mapping rate and inferred library type | Flag samples far below the others; confirm strandedness | planned |
+| 2026-10-09 | salmon mapping rate and inferred library type | Flag samples far below the others; confirm strandedness | passed: mapping rates 91.9–93.2% (DMSO 92.5–93.2%, OSI9 91.9–92.7%); tight range, no outliers; library type auto-detected |
 | Week 2 | Size factors, dispersion plot, sample-distance heatmap | Sanity of normalization and variability estimates | planned |
 | Week 2 | Replicates cluster by condition in PCA | Confirms the drug effect dominates and labels are right | planned |
 | Week 2 | Positive controls: EGFR-MAPK output genes (DUSP6, SPRY4, ETV4/5) and cell-cycle sets (E2F, G2M, MYC) down in persisters | Expected biology; confirms the analysis and labels are correct | planned |
