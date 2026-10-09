@@ -106,7 +106,7 @@ Source material for the README's Methods, Results and Limitations sections.
 | 2026-10-07 | All 5 remaining samples (PC9_DMSO_2/3, PC9_OSI9_1/2/3): gzip integrity, R1 = R2 | Confirms all 6 samples landed intact before QC | passed: all gzip intact; R1 = R2 for every sample; reads 20–25 M per sample |
 | 2026-10-06 | Review of Claude Code's site export script | No result may be hard-coded | failed, then fixed: headline always said "worse overall survival"; now built from the adjusted HR's 95% CI (commit 70b0172) |
 | 2026-10-06 | Plain-language review of Claude Code's statistics edits | Every statistical choice must be explainable | pending: edits were committed in 70b0172; review them with `git show 70b0172` |
-| Week 1 | FastQC / fastp reports: adapters, duplication, quality | Catch bad samples before quantification | planned |
+| 2026-10-09 | FastQC / fastp reports: adapters, duplication, quality, read retention | Catch bad samples before quantification | passed: Q30 92–95%, dup 9–16%, <2% reads lost per sample, GC 50% and consistent; no outliers; see open question on OSI9_1 duplication |
 | Week 1 | salmon mapping rate and inferred library type | Flag samples far below the others; confirm strandedness | planned |
 | Week 2 | Size factors, dispersion plot, sample-distance heatmap | Sanity of normalization and variability estimates | planned |
 | Week 2 | Replicates cluster by condition in PCA | Confirms the drug effect dominates and labels are right | planned |
@@ -171,6 +171,8 @@ All paired-end, 2 × 150 bp, one run per sample.
 - **2026-10-06 · done** 3 vs 3 sample set confirmed and `config/samples.tsv` filled (commit 70b0172).
 - **2026-10-07 · open** Instrument discrepancy: read headers suggest HiSeq 4000 (K00124, flowcell BBXX); GEO lists NovaSeq 6000 (GPL24676). Confirm in SRA Run Selector for SRR27989632. Does not affect results, but should be documented correctly.
 - **2026-10-07 · note** First PC9_DMSO_1 download hung at finalization; Snakemake resume completed it. Use `caffeinate -i snakemake …` to prevent macOS sleep during long downloads.
+- **2026-10-09 · open** OSI9_1 duplication rate (15.7%) matches DMSO replicates (~16%) rather than OSI9_2/3 (~9%). Not a problem by itself, but check whether OSI9_1 clusters with the other persisters in PCA; if it sits between groups it may warrant investigation.
+- **2026-10-09 · note** Persister GC content is consistently ~0.8 pp higher than DMSO (50.5–50.7% vs 49.6–49.9%). This is a small, reproducible shift across all three replicates in each group and is most likely biological (transcriptome composition shift), not technical.
 - **2026-10-06 · open** Spot-check one SRR on the SRA website.
 - **2026-10-06 · extension** Second persister set GSM8083426–428: find out whether it has its own matched controls. If so, rerun the comparison there as an independent replication.
 - **2026-10-06 · extension** 48 h acute osimertinib samples GSM8083377–379: a three-group design (control, acute, persister). Control vs acute is time-matched (both 48 h), so it isolates the drug's immediate effect; persister vs acute shows what changes as cells become persisters.
