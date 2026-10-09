@@ -84,7 +84,7 @@ rule get_transcriptome:
     output: "resources/transcripts.fa.gz"
     params: url=config["transcriptome_url"]
     log: "logs/ref/transcriptome.log"
-    shell: "wget -q -O {output} {params.url} 2> {log}"
+    shell: "curl -fsSL -o {output} {params.url} 2> {log}"
 
 
 rule tx2gene:
