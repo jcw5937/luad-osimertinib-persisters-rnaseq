@@ -67,8 +67,13 @@ pick_col <- function(candidates, dt) {
   found[[1]]
 }
 
-# Per-patient survival data from the GDC clinical supplement
-clinic <- as.data.table(GDCquery_clinic(project = "TCGA-LUAD", type = "clinical"))
+# Per-patient survival data from the GDC demographic endpoint.
+# type="clinical" returns the full nested record including a list-typed
+# "treatments" column that causes data.table's set() to fail; "demographic"
+# is a flat table with exactly the fields we need.
+clinic <- as.data.table(as.data.frame(
+  GDCquery_clinic(project = "TCGA-LUAD", type = "demographic")
+))
 message("Available clinic columns: ", paste(sort(names(clinic)), collapse = ", "))
 
 col_id     <- pick_col(c("submitter_id", "bcr_patient_barcode"), clinic)
