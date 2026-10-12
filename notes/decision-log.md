@@ -39,6 +39,7 @@ Source material for the README's Methods, Results and Limitations sections.
   Why no decoys: simpler and lighter on memory for a laptop (noted as a limitation).
 - **2026-09-30 · [assumed]** salmon quant with `--validateMappings --gcBias --seqBias`, library type auto-detected (`-l A`).
 - **2026-09-30 · [assumed]** Raw data and large intermediate files stay out of git; everything rebuilds from `snakemake --use-conda`.
+- **2026-10-12 · [confirmed]** `zcat` → `gzip -dc` in `tx2gene` rule. macOS `zcat` only reads `.Z` files; `gzip -dc` works on both macOS and Linux.
 - **2026-10-09 · [confirmed]** Raw FASTQs in `data/raw/` are wrapped in `protected()` in the `download_fastq` rule. Snakemake marks them read-only on disk after creation and will never overwrite them.
   Why: re-downloading 6 × ~5 GB SRA files takes ~20 min and risks losing verified data; protection makes this impossible.
 - **2026-10-07 · [confirmed]** ~~`sra-tools=3.1` in `workflow/envs/sra.yaml`.~~ **Replaced by:** `sra-tools=3.4.1`. No osx-arm64 build of 3.1 exists on bioconda or conda-forge; earliest arm64 build is 3.2.1, latest is 3.4.1. Pinned to 3.4.1 for reproducibility. Low risk: sra-tools only downloads and converts raw reads; it does not alter data values.

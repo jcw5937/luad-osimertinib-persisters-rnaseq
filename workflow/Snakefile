@@ -93,7 +93,7 @@ rule tx2gene:
     # GENCODE headers: ENST|ENSG|...|...|...|transcript_name|gene_name|...
     shell:
         """
-        zcat {input} | grep '^>' | sed 's/^>//' \
+        gzip -dc {input} | grep '^>' | sed 's/^>//' \
           | awk -F'|' 'BEGIN{{OFS="\\t"; print "tx","gene_id","gene_name"}} {{print $1,$2,$6}}' > {output}
         """
 
