@@ -39,6 +39,7 @@ Source material for the README's Methods, Results and Limitations sections.
   Why no decoys: simpler and lighter on memory for a laptop (noted as a limitation).
 - **2026-09-30 · [assumed]** salmon quant with `--validateMappings --gcBias --seqBias`, library type auto-detected (`-l A`).
 - **2026-09-30 · [assumed]** Raw data and large intermediate files stay out of git; everything rebuilds from `snakemake --use-conda`.
+- **2026-10-12 · [confirmed]** Volcano and heatmap use `padj_lfc` (the |LFC| > 1 test) for coloring, labeling, and gene selection. `colour = sig` moved into `geom_point(aes())` so the `top15` label layer (which has no `sig` column) inherits no color aesthetic. Statistics and output tables unchanged.
 - **2026-10-12 · [confirmed]** `zcat` → `gzip -dc` in `tx2gene` rule. macOS `zcat` only reads `.Z` files; `gzip -dc` works on both macOS and Linux.
 - **2026-10-09 · [confirmed]** Raw FASTQs in `data/raw/` are wrapped in `protected()` in the `download_fastq` rule. Snakemake marks them read-only on disk after creation and will never overwrite them.
   Why: re-downloading 6 × ~5 GB SRA files takes ~20 min and risks losing verified data; protection makes this impossible.

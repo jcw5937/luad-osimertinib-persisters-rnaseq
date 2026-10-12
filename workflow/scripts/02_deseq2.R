@@ -44,26 +44,26 @@ ggsave(snakemake@output$pca, p, width = 3.5, height = 3)
 # We use lfc_shrunk for the visual but the unshrunken padj for significance — shrinkage
 # changes the point estimate, not the hypothesis test decision.
 vlim <- max(abs(out$lfc_shrunk), na.rm = TRUE) * 1.05
-top15 <- head(out[!is.na(padj)][order(padj)], 15)
-vol_df <- as.data.frame(out[!is.na(padj)])
-vol_df$sig <- vol_df$padj < snakemake@params$alpha
+top15 <- head(out[!is.na(padj_lfc)][order(padj_lfc)], 15)
+vol_df <- as.data.frame(out[!is.na(padj_lfc)])
+vol_df$sig <- vol_df$padj_lfc < snakemake@params$alpha
 
-p_vol <- ggplot(vol_df, aes(lfc_shrunk, -log10(padj), colour = sig)) +
-  geom_point(size = 0.8, alpha = 0.6) +
+p_vol <- ggplot(vol_df, aes(lfc_shrunk, -log10(padj))) +
+  geom_point(aes(colour = sig), size = 0.8, alpha = 0.6) +
   geom_text_repel(data = as.data.frame(top15), aes(label = gene_name),
                   size = 2.5, max.overlaps = 20) +
   scale_colour_manual(values = c("FALSE" = "#94a3b8", "TRUE" = "#14b8a6"),
-                      labels = c("NS", paste0("FDR < ", snakemake@params$alpha))) +
+                      labels = c("NS", paste0("|log2FC| > 1, FDR < ", snakemake@params$alpha))) +
   scale_x_continuous(limits = c(-vlim, vlim)) +
   labs(x = "log\u2082 fold change (apeglm shrunk)", y = "-log\u2081\u2080 adjusted p-value",
        colour = NULL, title = "Persister vs Parental") +
   theme_classic(base_size = 10)
 ggsave(snakemake@output$volcano, p_vol, width = 4.5, height = 4)
 
-# Heatmap: top 50 genes by padj, row z-scored blind VST
+# Heatmap: top 50 genes by padj_lfc (|LFC| > 1 test), row z-scored blind VST
 # blind = TRUE: dispersions estimated without condition grouping — appropriate for
 # unsupervised visualization; avoids artificially inflating the apparent separation.
-top50_ids <- head(out[!is.na(padj)][order(padj)], 50)$gene_id
+top50_ids <- head(out[!is.na(padj_lfc)][order(padj_lfc)], 50)$gene_id
 mat <- assay(vsd)[top50_ids, ]
 rownames(mat) <- out[match(top50_ids, gene_id)]$gene_name
 mat <- t(scale(t(mat)))                                       # row z-score
