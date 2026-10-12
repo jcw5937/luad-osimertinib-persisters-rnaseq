@@ -36,6 +36,7 @@ pca <- plotPCA(vsd, intgroup = "condition", returnData = TRUE)
 pv  <- round(100 * attr(pca, "percentVar"))
 p <- ggplot(pca, aes(PC1, PC2, colour = condition, label = name)) +
   geom_point(size = 3) + geom_text_repel(size = 3) +
+  scale_colour_manual(values = c(parental = "#8b5cf6", persister = "#14b8a6")) +
   labs(x = paste0("PC1 (", pv[1], "%)"), y = paste0("PC2 (", pv[2], "%)")) +
   theme_classic(base_size = 10)
 ggsave(snakemake@output$pca, p, width = 3.5, height = 3)
@@ -47,15 +48,23 @@ vlim <- max(abs(out$lfc_shrunk), na.rm = TRUE) * 1.05
 top15 <- head(out[!is.na(padj_lfc)][order(padj_lfc)], 15)
 vol_df <- as.data.frame(out[!is.na(padj_lfc)])
 vol_df$sig <- vol_df$padj_lfc < snakemake@params$alpha
+# Cap padj at 1e-300 so -log10(padj)==Inf genes don't disappear from the plot;
+# capped points are shown as triangles (shape 17) instead of circles (shape 16).
+vol_df$padj_plot  <- pmax(vol_df$padj, 1e-300)
+vol_df$capped     <- vol_df$padj < 1e-300
+top15_df          <- as.data.frame(top15)
+top15_df$padj_plot <- pmax(top15_df$padj, 1e-300)
 
-p_vol <- ggplot(vol_df, aes(lfc_shrunk, -log10(padj))) +
-  geom_point(aes(colour = sig), size = 0.8, alpha = 0.6) +
-  geom_text_repel(data = as.data.frame(top15), aes(label = gene_name),
+p_vol <- ggplot(vol_df, aes(lfc_shrunk, -log10(padj_plot))) +
+  geom_point(aes(colour = sig, shape = capped), size = 0.8, alpha = 0.6) +
+  geom_text_repel(data = top15_df, aes(label = gene_name),
                   size = 2.5, max.overlaps = 20) +
   scale_colour_manual(values = c("FALSE" = "#94a3b8", "TRUE" = "#14b8a6"),
                       labels = c("NS", paste0("|log2FC| > 1, FDR < ", snakemake@params$alpha))) +
+  scale_shape_manual(values = c("FALSE" = 16, "TRUE" = 17), guide = "none") +
   scale_x_continuous(limits = c(-vlim, vlim)) +
-  labs(x = "log\u2082 fold change (apeglm shrunk)", y = "-log\u2081\u2080 adjusted p-value",
+  labs(x = expression(log[2]~"fold change (apeglm shrunk)"),
+       y = expression(-log[10]~"adjusted p-value"),
        colour = NULL, title = "Persister vs Parental") +
   theme_classic(base_size = 10)
 ggsave(snakemake@output$volcano, p_vol, width = 4.5, height = 4)
@@ -73,5 +82,5 @@ ann_colors <- list(condition = c(parental = "#8b5cf6", persister = "#14b8a6"))
 pheatmap(mat, annotation_col = ann_col, annotation_colors = ann_colors,
          show_colnames = TRUE, fontsize_row = 6, fontsize_col = 8,
          color = colorRampPalette(c("#6d28d9","white","#0d9488"))(100),
-         breaks = seq(-3, 3, length.out = 101), border_color = NA,
+         breaks = seq(-1.5, 1.5, length.out = 101), border_color = NA,
          filename = snakemake@output$heatmap, width = 5, height = 8)

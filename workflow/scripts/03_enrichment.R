@@ -17,12 +17,15 @@ pathways <- split(h$gene_symbol, h$gs_name)
 fg <- fgsea(pathways, ranks,
             nPermSimple = snakemake@params$nperm,
             minSize     = snakemake@params$min_size,
-            maxSize     = snakemake@params$max_size)[order(padj)]
+            maxSize     = snakemake@params$max_size,
+            eps         = 0)[order(padj)]
 fg[, leadingEdge := vapply(leadingEdge, paste, "", collapse = ";")]
 fwrite(fg, snakemake@output$fgsea, sep = "\t")
 
 top <- rbind(head(fg[NES > 0], 10), head(fg[NES < 0], 10))
 top[, pathway := factor(sub("HALLMARK_", "", pathway), levels = sub("HALLMARK_", "", pathway[order(NES)]))]
-p <- ggplot(top, aes(NES, pathway, fill = padj < 0.05)) + geom_col() +
-  labs(y = NULL, fill = "FDR < 0.05") + theme_classic(base_size = 9)
+top[, direction := ifelse(NES > 0, "Up in persisters", "Down in persisters")]
+p <- ggplot(top, aes(NES, pathway, fill = direction)) + geom_col() +
+  scale_fill_manual(values = c("Up in persisters" = "#14b8a6", "Down in persisters" = "#8b5cf6")) +
+  labs(y = NULL, fill = NULL) + theme_classic(base_size = 9)
 ggsave(snakemake@output$fig, p, width = 5, height = 4)
