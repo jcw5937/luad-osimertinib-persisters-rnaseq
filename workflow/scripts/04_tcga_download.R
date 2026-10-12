@@ -11,10 +11,10 @@ q <- GDCquery(project = "TCGA-LUAD", data.category = "Transcriptome Profiling",
 # GDCdownload unpacks each batch into the current working directory before moving
 # it, so we cd into resources/tcga_luad to keep tarballs and extracted folders
 # out of the project root.  Absolute paths are required before the chdir.
-abs_dir  <- normalizePath("resources/tcga_luad/GDCdata", mustWork = FALSE)
-abs_expr <- normalizePath(snakemake@output$expr, mustWork = FALSE)
-abs_clin <- normalizePath(snakemake@output$clin, mustWork = FALSE)
 orig_dir <- getwd()
+abs_dir  <- file.path(orig_dir, "resources/tcga_luad/GDCdata")
+abs_expr <- file.path(orig_dir, snakemake@output$expr)
+abs_clin <- file.path(orig_dir, snakemake@output$clin)
 setwd("resources/tcga_luad")
 on.exit(setwd(orig_dir), add = TRUE)
 
