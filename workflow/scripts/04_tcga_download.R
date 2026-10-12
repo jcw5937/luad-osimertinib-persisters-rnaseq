@@ -50,36 +50,66 @@ dds <- DESeqDataSet(se, design = ~ 1)
 dds <- dds[rowSums(counts(dds) >= 10) >= 20, ]
 saveRDS(assay(vst(dds, blind = TRUE)), abs_expr)
 
+# colData(se) has expression-linked clinical info but days_to_last_follow_up is
+# missing for most living patients — using it directly would drop ~300 censored
+# observations and inflate the event rate to ~92%.  Per-patient survival times
+# come from GDCquery_clinic(), which returns the full clinical supplement.
 cd <- as.data.table(as.data.frame(colData(se)))
-message("Available clinical columns: ", paste(sort(names(cd)), collapse = ", "))
+message("Available colData columns: ", paste(sort(names(cd)), collapse = ", "))
 
-# Return the first column name that exists in cd; stop with available columns if none do.
-pick_col <- function(candidates, cd) {
-  found <- candidates[candidates %in% names(cd)]
+# Return the first column name that exists in a data.table; stop with available
+# columns if none match.
+pick_col <- function(candidates, dt) {
+  found <- candidates[candidates %in% names(dt)]
   if (length(found) == 0)
     stop("None of [", paste(candidates, collapse = ", "), "] found. ",
-         "Available: ", paste(sort(names(cd)), collapse = ", "))
+         "Available: ", paste(sort(names(dt)), collapse = ", "))
   found[[1]]
 }
 
-col_sex    <- pick_col(c("gender", "sex", "sex_at_birth"),              cd)
-col_age    <- pick_col(c("age_at_index", "age_at_diagnosis"),           cd)
-col_stage  <- pick_col(c("ajcc_pathologic_stage", "tumor_stage"),       cd)
-col_status <- pick_col(c("vital_status"),                               cd)
-col_death  <- pick_col(c("days_to_death"),                              cd)
-col_follow <- pick_col(c("days_to_last_follow_up"),                     cd)
+# Per-patient survival data from the GDC clinical supplement
+clinic <- as.data.table(GDCquery_clinic(project = "TCGA-LUAD", type = "clinical"))
+message("Available clinic columns: ", paste(sort(names(clinic)), collapse = ", "))
+
+col_id     <- pick_col(c("submitter_id", "bcr_patient_barcode"), clinic)
+col_status <- pick_col(c("vital_status"),                        clinic)
+col_death  <- pick_col(c("days_to_death"),                       clinic)
+col_follow <- pick_col(c("days_to_last_follow_up"),              clinic)
+
+surv <- clinic[, .(
+  patient  = get(col_id),
+  os_time  = fifelse(get(col_status) == "Dead",
+                     as.numeric(get(col_death)),
+                     as.numeric(get(col_follow))),
+  os_event = as.integer(get(col_status) == "Dead")
+)]
+
+# Age and stage stay from colData (matched to expression samples)
+col_sex   <- pick_col(c("gender", "sex", "sex_at_birth"),         cd)
+col_age   <- pick_col(c("age_at_index", "age_at_diagnosis"),      cd)
+col_stage <- pick_col(c("ajcc_pathologic_stage", "tumor_stage"),  cd)
 
 age_val <- if (col_age == "age_at_diagnosis") cd[[col_age]] / 365.25 else cd[[col_age]]
 
-clin <- data.table(
-  sample   = cd$barcode,
-  patient  = cd$patient,
-  os_time  = fifelse(cd[[col_status]] == "Dead", cd[[col_death]], cd[[col_follow]]),
-  os_event = as.integer(cd[[col_status]] == "Dead"),
-  age      = age_val,
-  stage    = cd[[col_stage]],
-  sex      = cd[[col_sex]]
+expr_meta <- data.table(
+  sample  = cd$barcode,
+  patient = cd$patient,
+  age     = age_val,
+  stage   = cd[[col_stage]],
+  sex     = cd[[col_sex]]
 )
+
+clin <- merge(expr_meta, surv, by = "patient", all.x = TRUE)
 clin <- clin[!is.na(os_time) & os_time > 0]
+
+n_pts    <- nrow(clin)
+n_events <- sum(clin$os_event)
+med_fu   <- median(clin$os_time, na.rm = TRUE)
+message(sprintf("Patients: %d | events: %d (%.1f%%) | median follow-up: %.0f days",
+                n_pts, n_events, 100 * n_events / n_pts, med_fu))
+
+if (n_pts < 400)
+  stop("Only ", n_pts, " patients retained — expected ≥400 for TCGA-LUAD. ",
+       "Check merge key and GDCquery_clinic() output.")
+
 fwrite(clin, abs_clin, sep = "\t")
-message("Patients with OS: ", nrow(clin), " | events: ", sum(clin$os_event))
