@@ -1,7 +1,8 @@
 # TCGA-LUAD primary tumours: STAR counts -> VST matrix + overall-survival table
 log <- file(snakemake@log[[1]], open = "wt"); sink(log); sink(log, type = "message")
 suppressPackageStartupMessages({
-  library(TCGAbiolinks); library(SummarizedExperiment); library(DESeq2); library(data.table)
+  library(TCGAbiolinks); library(SummarizedExperiment); library(DESeq2)
+  library(data.table); library(jsonlite)
 })
 
 q <- GDCquery(project = "TCGA-LUAD", data.category = "Transcriptome Profiling",
@@ -67,21 +68,82 @@ pick_col <- function(candidates, dt) {
   found[[1]]
 }
 
-# Per-patient survival data from the GDC demographic endpoint.
-# type="clinical" returns the full nested record including a list-typed
-# "treatments" column that causes data.table's set() to fail; "demographic"
-# is a flat table with exactly the fields we need.
-clinic <- as.data.table(as.data.frame(
-  GDCquery_clinic(project = "TCGA-LUAD", type = "demographic")
-))
-message("Available clinic columns: ", paste(sort(names(clinic)), collapse = ", "))
+# Per-patient OS data.
+# GDCquery_clinic() dispatches an internal as.data.table S3 method on its
+# result that hits a set() length-mismatch error with the data.table version
+# in this conda env — both type="clinical" and type="demographic" are affected.
+# Primary path: call GDCquery_clinic(type="clinical") and extract only the four
+# columns we need via [[ into a fresh data.table() (no S3 dispatch on the full
+# object).  Fallback: GDC REST API (open-access, no token required).
+message("Fetching per-patient survival data...")
 
-col_id     <- pick_col(c("submitter_id", "bcr_patient_barcode"), clinic)
-col_status <- pick_col(c("vital_status"),                        clinic)
-col_death  <- pick_col(c("days_to_death"),                       clinic)
-col_follow <- pick_col(c("days_to_last_follow_up"),              clinic)
+.get_surv_clinic <- function() {
+  raw <- GDCquery_clinic(project = "TCGA-LUAD", type = "clinical")
+  data.table(
+    submitter_id           = raw[["submitter_id"]],
+    vital_status           = raw[["vital_status"]],
+    days_to_death          = as.numeric(raw[["days_to_death"]]),
+    days_to_last_follow_up = as.numeric(raw[["days_to_last_follow_up"]])
+  )
+}
 
-surv <- clinic[, .(
+.get_surv_api <- function() {
+  message("GDCquery_clinic unavailable; fetching from GDC REST API...")
+  filt <- URLencode(
+    '{"op":"=","content":{"field":"project.project_id","value":"TCGA-LUAD"}}',
+    reserved = TRUE
+  )
+  flds <- URLencode(
+    paste(c("submitter_id",
+            "demographic.vital_status",
+            "demographic.days_to_death",
+            "diagnoses.days_to_last_follow_up"), collapse = ","),
+    reserved = TRUE
+  )
+  resp <- fromJSON(
+    paste0("https://api.gdc.cancer.gov/cases",
+           "?filters=", filt, "&fields=", flds,
+           "&size=600&format=JSON"),
+    flatten = TRUE
+  )
+  hits <- resp$data$hits
+  message(sprintf("GDC API: %d / %d cases returned",
+                  nrow(hits), resp$data$pagination$total))
+
+  # days_to_last_follow_up lives in a list column 'diagnoses' (one list-element
+  # per patient); fromJSON(flatten=TRUE) may or may not collapse it.
+  dfu <- if ("diagnoses.days_to_last_follow_up" %in% names(hits)) {
+    as.numeric(hits[["diagnoses.days_to_last_follow_up"]])
+  } else {
+    vapply(hits[["diagnoses"]], function(d) {
+      if (is.null(d) || !is.data.frame(d) || nrow(d) == 0) return(NA_real_)
+      v <- d[["days_to_last_follow_up"]]
+      if (is.null(v) || all(is.na(v))) return(NA_real_)
+      as.numeric(na.omit(v)[[1]])
+    }, numeric(1))
+  }
+
+  data.table(
+    submitter_id           = hits[["submitter_id"]],
+    vital_status           = hits[["demographic.vital_status"]],
+    days_to_death          = as.numeric(hits[["demographic.days_to_death"]]),
+    days_to_last_follow_up = dfu
+  )
+}
+
+clinic_surv <- tryCatch(.get_surv_clinic(),
+                        error = function(e) {
+                          message("GDCquery_clinic error: ", conditionMessage(e))
+                          .get_surv_api()
+                        })
+message("Available clinic columns: ", paste(sort(names(clinic_surv)), collapse = ", "))
+
+col_id     <- pick_col(c("submitter_id", "bcr_patient_barcode"), clinic_surv)
+col_status <- pick_col(c("vital_status"),                        clinic_surv)
+col_death  <- pick_col(c("days_to_death"),                       clinic_surv)
+col_follow <- pick_col(c("days_to_last_follow_up"),              clinic_surv)
+
+surv <- clinic_surv[, .(
   patient  = get(col_id),
   os_time  = fifelse(get(col_status) == "Dead",
                      as.numeric(get(col_death)),
