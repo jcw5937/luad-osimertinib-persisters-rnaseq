@@ -51,10 +51,35 @@ dds <- dds[rowSums(counts(dds) >= 10) >= 20, ]
 saveRDS(assay(vst(dds, blind = TRUE)), abs_expr)
 
 cd <- as.data.table(as.data.frame(colData(se)))
-clin <- cd[, .(sample = barcode, patient,
-               os_time  = fifelse(vital_status == "Dead", days_to_death, days_to_last_follow_up),
-               os_event = as.integer(vital_status == "Dead"),
-               age = age_at_index, stage = ajcc_pathologic_stage, sex = gender)]
+message("Available clinical columns: ", paste(sort(names(cd)), collapse = ", "))
+
+# Return the first column name that exists in cd; stop with available columns if none do.
+pick_col <- function(candidates, cd) {
+  found <- candidates[candidates %in% names(cd)]
+  if (length(found) == 0)
+    stop("None of [", paste(candidates, collapse = ", "), "] found. ",
+         "Available: ", paste(sort(names(cd)), collapse = ", "))
+  found[[1]]
+}
+
+col_sex    <- pick_col(c("gender", "sex", "sex_at_birth"),              cd)
+col_age    <- pick_col(c("age_at_index", "age_at_diagnosis"),           cd)
+col_stage  <- pick_col(c("ajcc_pathologic_stage", "tumor_stage"),       cd)
+col_status <- pick_col(c("vital_status"),                               cd)
+col_death  <- pick_col(c("days_to_death"),                              cd)
+col_follow <- pick_col(c("days_to_last_follow_up"),                     cd)
+
+age_val <- if (col_age == "age_at_diagnosis") cd[[col_age]] / 365.25 else cd[[col_age]]
+
+clin <- data.table(
+  sample   = cd$barcode,
+  patient  = cd$patient,
+  os_time  = fifelse(cd[[col_status]] == "Dead", cd[[col_death]], cd[[col_follow]]),
+  os_event = as.integer(cd[[col_status]] == "Dead"),
+  age      = age_val,
+  stage    = cd[[col_stage]],
+  sex      = cd[[col_sex]]
+)
 clin <- clin[!is.na(os_time) & os_time > 0]
 fwrite(clin, abs_clin, sep = "\t")
 message("Patients with OS: ", nrow(clin), " | events: ", sum(clin$os_event))
