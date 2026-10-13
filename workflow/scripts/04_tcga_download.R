@@ -93,11 +93,15 @@ message("Fetching per-patient survival data...")
     '{"op":"=","content":{"field":"project.project_id","value":"TCGA-LUAD"}}',
     reserved = TRUE
   )
+  # diagnoses.days_to_last_follow_up is the harmonised field but is often NA for
+  # living patients; follow_ups.days_to_last_follow_up comes from BCR follow-up
+  # visit records and fills the gap.  We take the max of both per patient.
   flds <- URLencode(
     paste(c("submitter_id",
             "demographic.vital_status",
             "demographic.days_to_death",
-            "diagnoses.days_to_last_follow_up"), collapse = ","),
+            "diagnoses.days_to_last_follow_up",
+            "follow_ups.days_to_last_follow_up"), collapse = ","),
     reserved = TRUE
   )
   resp <- fromJSON(
@@ -106,28 +110,45 @@ message("Fetching per-patient survival data...")
            "&size=600&format=JSON"),
     flatten = TRUE
   )
-  hits <- resp$data$hits
-  message(sprintf("GDC API: %d / %d cases returned",
-                  nrow(hits), resp$data$pagination$total))
+  hits  <- resp$data$hits
+  total <- resp$data$pagination$total
+  message(sprintf("GDC API: %d / %d cases returned", nrow(hits), total))
+  if (nrow(hits) < total)
+    warning("Pagination needed; only ", nrow(hits), " of ", total, " cases fetched")
 
-  # days_to_last_follow_up lives in a list column 'diagnoses' (one list-element
-  # per patient); fromJSON(flatten=TRUE) may or may not collapse it.
-  dfu <- if ("diagnoses.days_to_last_follow_up" %in% names(hits)) {
-    as.numeric(hits[["diagnoses.days_to_last_follow_up"]])
-  } else {
-    vapply(hits[["diagnoses"]], function(d) {
-      if (is.null(d) || !is.data.frame(d) || nrow(d) == 0) return(NA_real_)
-      v <- d[["days_to_last_follow_up"]]
-      if (is.null(v) || all(is.na(v))) return(NA_real_)
-      as.numeric(na.omit(v)[[1]])
+  vs  <- hits[["demographic.vital_status"]]
+  dtd <- as.numeric(hits[["demographic.days_to_death"]])
+
+  # Helper: pull max days_to_last_follow_up from a possibly-list column
+  extract_max_dfu <- function(flat_col, list_col) {
+    if (flat_col %in% names(hits)) return(as.numeric(hits[[flat_col]]))
+    if (!list_col %in% names(hits)) return(rep(NA_real_, nrow(hits)))
+    vapply(hits[[list_col]], function(x) {
+      if (is.null(x) || !is.data.frame(x) || nrow(x) == 0) return(NA_real_)
+      v <- as.numeric(na.omit(x[["days_to_last_follow_up"]]))
+      if (length(v) == 0) NA_real_ else max(v)
     }, numeric(1))
   }
 
+  dfu_diag <- extract_max_dfu("diagnoses.days_to_last_follow_up", "diagnoses")
+  dfu_fu   <- extract_max_dfu("follow_ups.days_to_last_follow_up", "follow_ups")
+  dfu      <- mapply(function(d, f) {
+    v <- na.omit(c(d, f)); if (length(v) == 0) NA_real_ else max(v)
+  }, dfu_diag, dfu_fu)
+
+  n_living <- sum(vs != "Dead", na.rm = TRUE)
+  message(sprintf(
+    "Follow-up coverage (of %d living): diagnoses=%d  follow_ups=%d  combined=%d",
+    n_living,
+    sum(!is.na(dfu_diag) & vs != "Dead", na.rm = TRUE),
+    sum(!is.na(dfu_fu)   & vs != "Dead", na.rm = TRUE),
+    sum(!is.na(dfu)      & vs != "Dead", na.rm = TRUE)))
+
   data.table(
     submitter_id           = hits[["submitter_id"]],
-    vital_status           = hits[["demographic.vital_status"]],
-    days_to_death          = as.numeric(hits[["demographic.days_to_death"]]),
-    days_to_last_follow_up = dfu
+    vital_status           = vs,
+    days_to_death          = dtd,
+    days_to_last_follow_up = as.numeric(dfu)
   )
 }
 
