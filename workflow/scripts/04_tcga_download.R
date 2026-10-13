@@ -93,15 +93,16 @@ message("Fetching per-patient survival data...")
     '{"op":"=","content":{"field":"project.project_id","value":"TCGA-LUAD"}}',
     reserved = TRUE
   )
-  # diagnoses.days_to_last_follow_up is the harmonised field but is often NA for
-  # living patients; follow_ups.days_to_last_follow_up comes from BCR follow-up
-  # visit records and fills the gap.  We take the max of both per patient.
+  # diagnoses.days_to_last_follow_up covers only 17/397 living patients in the
+  # 2025 GDC data model; the follow-up visit records moved to follow_ups nodes
+  # with the per-visit field days_to_follow_up (no "last"), which covers
+  # 329/397.  Censoring time = max over both sources per patient.
   flds <- URLencode(
     paste(c("submitter_id",
             "demographic.vital_status",
             "demographic.days_to_death",
             "diagnoses.days_to_last_follow_up",
-            "follow_ups.days_to_last_follow_up"), collapse = ","),
+            "follow_ups.days_to_follow_up"), collapse = ","),
     reserved = TRUE
   )
   resp <- fromJSON(
@@ -119,19 +120,22 @@ message("Fetching per-patient survival data...")
   vs  <- hits[["demographic.vital_status"]]
   dtd <- as.numeric(hits[["demographic.days_to_death"]])
 
-  # Helper: pull max days_to_last_follow_up from a possibly-list column
-  extract_max_dfu <- function(flat_col, list_col) {
+  # Helper: pull max follow-up days from a possibly-list column
+  extract_max_dfu <- function(flat_col, list_col, inner_col) {
     if (flat_col %in% names(hits)) return(as.numeric(hits[[flat_col]]))
     if (!list_col %in% names(hits)) return(rep(NA_real_, nrow(hits)))
     vapply(hits[[list_col]], function(x) {
       if (is.null(x) || !is.data.frame(x) || nrow(x) == 0) return(NA_real_)
-      v <- as.numeric(na.omit(x[["days_to_last_follow_up"]]))
+      if (!inner_col %in% names(x)) return(NA_real_)
+      v <- as.numeric(na.omit(x[[inner_col]]))
       if (length(v) == 0) NA_real_ else max(v)
     }, numeric(1))
   }
 
-  dfu_diag <- extract_max_dfu("diagnoses.days_to_last_follow_up", "diagnoses")
-  dfu_fu   <- extract_max_dfu("follow_ups.days_to_last_follow_up", "follow_ups")
+  dfu_diag <- extract_max_dfu("diagnoses.days_to_last_follow_up", "diagnoses",
+                              "days_to_last_follow_up")
+  dfu_fu   <- extract_max_dfu("follow_ups.days_to_follow_up", "follow_ups",
+                              "days_to_follow_up")
   dfu      <- mapply(function(d, f) {
     v <- na.omit(c(d, f)); if (length(v) == 0) NA_real_ else max(v)
   }, dfu_diag, dfu_fu)
