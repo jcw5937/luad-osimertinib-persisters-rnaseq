@@ -1,0 +1,11 @@
+{
+  "headline": "The 25-gene osimertinib-persister signature shows no clear association with overall survival in TCGA-LUAD (HR 1.06, 95 % CI 0.91–1.24).",
+  "samples": 6,
+  "genes_tested": 16198,
+  "significant_genes": 2304,
+  "n_pathways": 50,
+  "n_sig_pathways": 32,
+  "hazard_ratio": 1.06,
+  "hr_ci_low": 0.9097,
+  "hr_ci_high": 1.235
+}

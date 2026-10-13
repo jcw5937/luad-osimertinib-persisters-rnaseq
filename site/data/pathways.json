@@ -1,0 +1,122 @@
+[
+  {
+    "name": "INTERFERON ALPHA RESPONSE",
+    "nes": 1.944,
+    "padj": 4.69e-05,
+    "leading_edge": ["IFIT2", "IFITM3", "LGALS3BP", "C1S", "B2M", "CD47", "STAT2", "IRF9", "TENT5A", "GBP2", "IFITM1", "LY6E", "OAS1", "TXNIP", "IRF1", "ELF1", "HLA-C", "IFIT3", "DHX58", "HELZ2", "IFITM2", "ISG15", "UBE2L6", "DDX60", "PARP14", "PARP9", "MX1", "UBA7", "CXCL10", "HERC6", "ADAR", "IFI44", "IRF7", "RNF31", "PARP12", "OASL", "IFIH1", "PSMB9", "TRIM26", "IFI44L", "TAP1", "LAP3", "PSMB8", "RTP4", "BST2", "SAMD9L"]
+  },
+  {
+    "name": "INTERFERON GAMMA RESPONSE",
+    "nes": 1.907,
+    "padj": 6.84e-06,
+    "leading_edge": ["IFIT2", "ICAM1", "BPGM", "ARID5B", "IFITM3", "HLA-B", "LGALS3BP", "SECTM1", "C1S", "APOL6", "STAT3", "B2M", "IFIT1", "ZNFX1", "CFB", "NFKBIA", "STAT2", "IRF9", "BTG1", "LATS2", "MVP", "VAMP8", "TAPBP", "CDKN1A", "LY6E", "TXNIP", "MYD88", "HLA-A", "PSMB10", "IRF1", "TNFAIP3", "C1R", "PTGS2", "PTPN6", "RIGI", "IFIT3", "SERPING1", "DHX58", "HLA-DMA", "HELZ2", "IFITM2", "PELI1", "STAT1", "ISG15", "SPPL2A", "UBE2L6", "DDX60", "PARP14", "CCL5", "MX1", "CASP4", "CFH", "SLAMF7", "CSF2RB", "OAS2", "PIM1", "CXCL10", "CASP7", "PML", "ST8SIA4", "HERC6", "ADAR", "IFI44", "IRF7", "RNF31"]
+  },
+  {
+    "name": "ANGIOGENESIS",
+    "nes": 1.899,
+    "padj": 0.000844,
+    "leading_edge": ["OLR1", "SPP1", "TNFRSF21", "FSTL1", "THBD", "APP", "VTN", "STC1"]
+  },
+  {
+    "name": "COAGULATION",
+    "nes": 1.885,
+    "padj": 8.18e-05,
+    "leading_edge": ["OLR1", "CLU", "CFD", "TIMP3", "CTSH", "FN1", "MMP14", "CAPN5", "C1S", "LAMP2", "CTSB", "GSN", "HTRA1", "CTSO", "CFB", "PLAT", "THBD", "USP11", "FYN", "LRP1", "C1R", "SH2B2", "SERPINB2", "SERPING1", "KLK8", "CD9", "P2RY1", "TFPI2", "ISCU", "BMP1", "CFH"]
+  },
+  {
+    "name": "MYOGENESIS",
+    "nes": 1.736,
+    "padj": 0.000293,
+    "leading_edge": ["CLU", "IGFBP3", "CFD", "HDAC5", "PDE4DIP", "BAG1", "SOD3", "HSPB8", "KLF5", "EIF4A2", "GSN", "VIPR1", "NAV2", "ERBB3", "FOXO4", "DAPK2", "ATP6AP1", "CDKN1A", "APP", "SYNGR2", "TNNC1", "BDKRB2", "CTF1", "MYO1C", "MYOZ1", "GAA", "GJA5", "NOTCH1", "PLXNB2", "SVIL", "MRAS", "PICK1", "MB", "GADD45B", "TNNT2", "SORBS1", "APOD", "MEF2A", "OCEL1", "ACHE", "CRYAB"]
+  },
+  {
+    "name": "COMPLEMENT",
+    "nes": 1.734,
+    "padj": 0.000343,
+    "leading_edge": ["OLR1", "CLU", "CD55", "CTSH", "TIMP2", "FN1", "MMP14", "LGALS3", "C1S", "CD59", "LAMP2", "GATA3", "CTSB", "CTSD", "CTSO", "CFB", "SPOCK2", "CTSL", "PLAT", "FYN", "IRF1", "LRP1", "TNFAIP3", "LYN", "CPM", "BRPF3", "C1R", "CTSS", "CD46", "SERPINB2", "SERPING1", "CCL5", "PSEN1", "TFPI2", "CASP10", "PHEX", "CASP4", "APOBEC3F", "CFH", "TMPRSS6", "SERPINE1", "PIM1", "RASGRP1", "CASP7", "PRDM4", "TIMP1", "MMP15", "IRF7", "DOCK9", "ITGAM", "CDA", "STX4", "C4BPB", "JAK2"]
+  },
+  {
+    "name": "UV RESPONSE DN",
+    "nes": 1.58,
+    "padj": 0.00453,
+    "leading_edge": ["IGFBP5", "CITED2", "PTPN21", "DUSP1", "PRKAR2B", "ERBB2", "ATRN", "CCN1", "RND3", "PLPP3", "IRS1", "BDNF", "NOTCH2", "FHL2", "LAMC1", "FYN", "APBB2", "DLC1", "DAB2", "MGLL", "ID1", "VLDLR", "PTPRM", "TGFBR3", "MET", "RBPMS", "NR3C1", "PRDM2", "ANXA2", "BCKDHB", "CDON", "TJP1", "ICA1", "ARHGEF9", "AKT3", "DLG1", "ANXA4", "SERPINE1", "DBP"]
+  },
+  {
+    "name": "KRAS SIGNALING DN",
+    "nes": 1.576,
+    "padj": 0.00542,
+    "leading_edge": ["ATP6V1B1", "UPK3B", "KRT13", "EFHD1", "SLC29A3", "KRT15", "SYNPO", "BTG2", "TGM1", "SKIL", "MTHFR", "PTPRJ", "ADRA2C", "NR4A2", "IDUA", "SERPINB2", "CAMK1D", "EDN1", "KLK8", "MFSD6", "PRODH", "GPRC5C", "SGK1", "KLK7", "YPEL1", "TCF7L1", "MX1", "KRT4", "SPTBN2", "SPRR3", "CLSTN3", "COQ8A", "NPY4R", "THNSL2", "CPEB3"]
+  },
+  {
+    "name": "TNFA SIGNALING VIA NFKB",
+    "nes": 1.541,
+    "padj": 0.00395,
+    "leading_edge": ["OLR1", "IFIT2", "ICAM1", "FOSL2", "IL6ST", "SLC2A3", "SAT1", "DUSP1", "B4GALT1", "KLF4", "CEBPD", "NFKBIA", "CCN1", "NFKB2", "PNRC1", "BTG1", "BIRC3", "PLPP3", "CDKN1A", "ZBTB10", "EFNA1", "FUT4", "TNIP1", "BTG2", "IRF1", "TIPARP", "PPP1R15A", "FOS", "TNFAIP3", "ID2", "RHOB", "LAMB3", "KLF9", "BCL6", "PFKFB3", "SLC16A6", "PTGS2", "RIGI", "NR4A2", "ABCA1", "SERPINB2", "RELB", "EDN1", "ATF3", "GADD45B", "RCAN1", "SDC4", "SGK1", "MXD1", "CCL5"]
+  },
+  {
+    "name": "INFLAMMATORY RESPONSE",
+    "nes": 1.54,
+    "padj": 0.00559,
+    "leading_edge": ["OLR1", "CD55", "ICAM1", "IL1R1", "MMP14", "RNF144B", "SLC31A2", "NFKBIA", "P2RX4", "TLR3", "TAPBP", "CDKN1A", "IFITM1", "LY6E", "BTG2", "IRF1", "LYN", "ABCA1", "TNFSF15", "EDN1", "MET", "CD82", "PTAFR", "SCARF1", "MXD1", "CCL5", "PVR", "PSEN1", "SELENOS", "RGS16", "FZD5", "SERPINE1", "HRH1", "CXCL10", "RASGRP1", "TIMP1"]
+  },
+  {
+    "name": "E2F TARGETS",
+    "nes": -3.231,
+    "padj": 8.59e-61,
+    "leading_edge": ["CDC20", "DLGAP5", "TOP2A", "HMMR", "KPNA2", "TMPO", "AURKA", "HMGA1", "HMGB3", "CCNB2", "UBE2S", "MKI67", "PTTG1", "RRM2", "CSE1L", "HMGB2", "CENPE", "H2AZ1", "DEPDC1", "CDC25B", "NCAPD2", "KIF2C", "LBR", "CDK1", "SPAG5", "MCM6", "PLK1", "MCM7", "SSRP1", "CDCA3", "KIF4A", "TUBB", "PCNA", "LMNB1", "RAD21", "SNRPB", "ATAD2", "JPT1", "NME1", "CDKN3", "RANBP1", "CDCA8", "PAICS", "CKS2", "NUP205", "RAN", "ILF3", "E2F8", "MELK", "NASP", "H2AX", "NAP1L1", "GSPT1", "AURKB", "ANP32E", "BIRC5", "CKS1B", "RACGAP1", "STMN1", "MYBL2", "ESPL1", "SRSF1", "TACC3", "TRA2B", "NUDT21", "HNRNPD", "KIF22", "PA2G4", "CDKN2A", "NOP56", "CBX5", "HELLS", "DDX39A", "BUB1B", "DNMT1", "DIAPH3", "DUT", "USP1", "XRCC6", "MAD2L1", "DEK", "MCM3", "BRCA1", "TRIP13", "RFC2", "EIF2S1", "MCM2", "PSIP1", "KIF18B", "TUBG1", "ASF1B", "EZH2", "GINS1", "CIT", "SRSF2", "RPA3", "ORC6", "AK2", "PLK4", "NUP107", "SHMT1", "TK1", "POLD2", "PRKDC", "MTHFD2", "NOLC1", "DSCC1", "MMS22L", "MCM5", "POLD1", "CDC25A", "CHEK1", "POLE", "SMC3", "RNASEH2A", "GINS3", "RBBP7", "DCTPP1", "UBE2T", "RFC3", "EXOSC8", "SMC6", "LYAR", "SYNCRIP", "TIMELESS", "TCF19", "NUP153", "SMC4", "TBRG4", "UNG", "GINS4", "SMC1A", "RAD51AP1", "CDK4", "CCP110", "MYC", "CTPS1", "CENPM", "LIG1", "RPA1", "POLA2", "WDR90", "SUV39H1", "SPC24", "CNOT9", "SPC25", "MSH2", "SLBP"]
+  },
+  {
+    "name": "MYC TARGETS V1",
+    "nes": -3.077,
+    "padj": 2.47e-48,
+    "leading_edge": ["CDC20", "HNRNPA2B1", "KPNA2", "CCNA2", "CCT4", "LDHA", "H2AZ1", "MCM6", "MCM7", "EIF4A1", "RPS2", "SRSF3", "HSPD1", "PCNA", "HNRNPC", "NME1", "RANBP1", "CBX3", "RAN", "HPRT1", "RFC4", "NAP1L1", "GSPT1", "HNRNPA1", "HNRNPA3", "IARS1", "SNRPA1", "SRSF1", "CDC45", "DDX21", "TRA2B", "HNRNPD", "XPOT", "CCT5", "C1QBP", "PA2G4", "HNRNPR", "NOP56", "SRSF7", "CCT3", "TUFM", "GOT2", "PPIA", "PTGES3", "ABCE1", "PSMA7", "DUT", "HDGF", "USP1", "XRCC6", "MAD2L1", "SLC25A3", "RUVBL2", "PHB2", "DEK", "VBP1", "SSB", "PPM1G", "YWHAE", "TFDP1", "YWHAQ", "CCT2", "SNRPA", "EIF2S1", "MCM2", "KARS1", "ILF2", "CYC1", "EIF4H", "FBL", "PSMD1", "SRSF2", "PSMA4", "IMPDH2", "RRM1", "UBA2", "NPM1", "EIF3B", "HNRNPU", "PSMA2", "EIF3J", "POLD2", "BUB3", "PSMD14", "CCT7", "NOLC1", "KPNB1", "SET", "MCM5", "TARDBP", "RNPS1", "SF3B3", "SRPK1", "PRDX3", "RSL1D1", "EIF4E", "AIMP2", "EIF4G2", "TRIM28", "NCBP1", "EPRS1", "SERBP1", "U2AF1", "SYNCRIP", "EIF2S2", "DHX15", "PSMB3", "EEF1B2", "GLO1", "PSMC6", "CDK4", "UBE2L3", "MYC", "CTPS1", "MRPL9", "EIF1AX", "HSP90AB1", "LSM2", "PSMA1", "VDAC3", "PSMD7", "PGK1", "SSBP1", "FAM120A", "SNRPG", "SNRPD2", "TCP1", "CSTF2", "CUL1", "ERH", "RPS5", "VDAC1", "NDUFAB1", "PSMD3", "PABPC1", "COX5A", "EIF3D", "ETF1", "RPL22", "PSMA6", "PSMB2", "POLE3", "NOP16", "PRPS2", "IFRD1", "HSPE1", "G3BP1", "LSM7", "PCBP1", "PHB1"]
+  },
+  {
+    "name": "G2M CHECKPOINT",
+    "nes": -3.067,
+    "padj": 1.4e-45,
+    "leading_edge": ["CDC20", "TPX2", "CENPF", "TOP2A", "PRC1", "MT2A", "HMMR", "KPNA2", "KIF11", "TMPO", "AURKA", "CCNA2", "CCND1", "HMGA1", "HMGB3", "CCNB2", "UBE2S", "MKI67", "SLC7A5", "PTTG1", "CENPE", "BUB1", "H2AZ1", "UBE2C", "CDC25B", "KIF2C", "NEK2", "LBR", "CDK1", "H2AZ2", "MCM6", "PLK1", "KNL1", "KIF4A", "LMNB1", "RAD21", "JPT1", "CDKN3", "PBK", "NUSAP1", "CCNF", "CKS2", "KIF20B", "KIF15", "TROAP", "DTYMK", "ILF3", "HIF1A", "NASP", "H2AX", "CENPA", "GSPT1", "AURKB", "NSD2", "CDC6", "BIRC5", "CKS1B", "RACGAP1", "SFPQ", "STMN1", "MYBL2", "ESPL1", "SRSF1", "CDC45", "TACC3", "TRA2B", "HNRNPD", "SMC2", "KIF22", "STIL", "EWSR1", "TTK", "DDX39A", "ODF2", "DBF4", "INCENP", "MAD2L1", "NDC80", "MCM3", "TFDP1", "MCM2", "KIF5B", "EZH2", "SRSF2", "ORC6", "GINS2", "TOP1", "PLK4", "HNRNPU", "SRSF10", "CDC27", "BUB3", "PRMT5", "NOLC1", "KPNB1", "UCK2", "MCM5", "CDC25A", "CHEK1", "KIF23", "POLE", "DKC1", "MAP3K20", "HSPA8", "NCL", "EXO1", "RAD54L", "E2F4", "SYNCRIP", "CHAF1A", "SMC4", "AMD1", "SMC1A", "POLQ", "CDK4", "CDC7", "MYC", "TENT4A", "CUL3", "SLC7A1", "POLA2", "KMT5A", "CUL1", "SUV39H1"]
+  },
+  {
+    "name": "MTORC1 SIGNALING",
+    "nes": -2.495,
+    "padj": 4.18e-19,
+    "leading_edge": ["SCD", "SLC7A11", "AK4", "AURKA", "DHCR24", "SLC7A5", "RRM2", "BUB1", "LDHA", "G6PD", "CCT6A", "GAPDH", "CTSC", "PLK1", "ENO1", "PLOD2", "GPI", "HSPD1", "ME1", "TPI1", "PHGDH", "CCNF", "NUP205", "GMPS", "HPRT1", "PPA1", "ACSL3", "PSPH", "BHLHE40", "PNP", "ERO1A", "SLC6A6", "DDX39A", "DHFR", "ALDOA", "PPIA", "DHCR7", "STIP1", "LDLR", "ACACA", "ACTR3", "ACLY", "MCM2", "TOMM40", "PSAT1", "TUBG1", "PSMA4", "SHMT2", "FADS1", "GCLC", "GBE1", "HSPA4", "HSPA9", "PSMD14", "MTHFD2", "CDC25A", "PSMD12", "RDH11", "TCEA1", "EPRS1", "STARD4", "GLA", "ELOVL5", "EIF2S2", "GOT1", "HMGCR", "PRDX1", "IMMT", "ATP2A2", "UNG", "PSMC6", "CCNG1", "HSP90B1", "PSMA3", "RPA1", "TRIB3", "PGK1", "HMBS", "INSIG1", "TUBA4A", "GSR", "UCHL5", "PGM1", "EDEM1", "GSK3B", "SQLE", "TES", "NHERF1", "ETF1", "POLR3G", "ADIPOR2", "IFRD1", "HSPE1", "P4HA1", "EBP", "PSMC2", "ATP5MC1", "WARS1", "IDI1", "SEC11A", "PFKL", "DDIT4", "ARPC5L", "PDK1"]
+  },
+  {
+    "name": "MYC TARGETS V2",
+    "nes": -2.224,
+    "padj": 5.5e-08,
+    "leading_edge": ["PLK1", "HSPD1", "CBX3", "PA2G4", "IPO4", "NOP56", "TCOF1", "PRMT3", "NPM1", "PLK4", "NOLC1", "MCM5", "DCTPP1", "AIMP2", "UTP20", "LAS1L", "TBRG4", "UNG", "CDK4", "WDR43", "PUS1", "MYC", "NOP2", "BYSL", "MRTO4", "IMP4", "WDR74", "NOP16", "PPRC1", "HSPE1", "PES1", "PHB1", "RABEPK", "SLC19A1", "NIP7", "GRWD1", "NDUFAF4", "SRM"]
+  },
+  {
+    "name": "MITOTIC SPINDLE",
+    "nes": -2.111,
+    "padj": 4.29e-10,
+    "leading_edge": ["TPX2", "DLGAP5", "CENPF", "TOP2A", "PRC1", "ANLN", "KIF11", "AURKA", "CCNB2", "CENPE", "BUB1", "KIF2C", "NEK2", "CDK1", "FSCN1", "ECT2", "PLK1", "KIF4A", "LMNB1", "CKAP5", "NUSAP1", "KIF20B", "KIF15", "BIRC5", "RACGAP1", "ESPL1", "KIF22", "TTK", "PIF1", "INCENP", "NDC80", "YWHAE", "KIF5B", "FLNA", "CDC27", "KLC1", "PALLD", "KIF23", "SMC3", "LRPPRC", "KNTC1", "EPB41L2", "BIN1", "NET1", "TUBGCP3", "SMC4", "CNTRL", "SMC1A", "TLK1", "SEPTIN9", "SASS6", "ARAP3", "GEMIN4", "TUBA4A", "KIF3C", "TIAM1", "FBXO5", "KIF1B", "SAC3D1", "RHOF", "WASF2", "PCGF5", "KIF3B", "BRCA2"]
+  },
+  {
+    "name": "OXIDATIVE PHOSPHORYLATION",
+    "nes": -2.104,
+    "padj": 2.79e-10,
+    "leading_edge": ["LDHA", "LDHB", "GPI", "SLC25A5", "ETFB", "ETFA", "ATP5F1A", "ATP5F1B", "FH", "GOT2", "CYCS", "ATP5MC3", "SLC25A3", "PHB2", "DLST", "CYC1", "SUCLG1", "AIFM1", "HADHA", "IDH2", "HSPA9", "COX8A", "ACAT1", "UQCRH", "PRDX3", "ATP5PB", "NDUFA9", "MRPL11", "LRPPRC", "COX6A1", "CPT1A", "ECHS1", "UQCRC1", "UQCRFS1", "SDHB", "IMMT", "NDUFS1", "NDUFS7", "MRPL35", "ATP5F1C", "CS", "SDHA", "PDHA1", "MDH2", "IDH3A", "VDAC3", "DLAT", "ACAA2", "MDH1", "NDUFS6", "CYB5A", "NDUFS8", "HSD17B10", "VDAC1", "NDUFAB1", "TIMM50", "OAT", "UQCRC2", "ATP5PD", "COX5A", "NDUFC1", "SUCLA2", "GPX4", "NQO2", "UQCRQ", "MRPS22", "MFN2", "ATP5MC1", "ATP5F1D", "COX7B", "IDH3B", "ATP5MG", "ATP5MF", "ATP5PO", "NDUFB8", "NDUFV1", "VDAC2", "OPA1", "GRPEL1", "MRPS15", "POLR2F", "ETFDH", "TIMM10", "NDUFS3", "ATP5F1E", "PDHB", "BAX", "ATP5PF", "NDUFS4", "ABCB7", "NDUFA6", "NDUFS2", "NDUFB6", "MRPS12", "TOMM70", "NDUFA8", "SDHC", "UQCR10"]
+  },
+  {
+    "name": "SPERMATOGENESIS",
+    "nes": -1.96,
+    "padj": 2.77e-05,
+    "leading_edge": ["AURKA", "CCNB2", "BUB1", "KIF2C", "NEK2", "CDK1", "CDKN3", "RFC4", "TTK", "DBF4", "NCAPH", "EZH2", "NF2", "TOPBP1", "CLPB", "IFT88", "IDE", "PARP2", "VDAC3", "RPL39L", "LPIN1", "PRKAR2A", "MAP7"]
+  },
+  {
+    "name": "FATTY ACID METABOLISM",
+    "nes": -1.844,
+    "padj": 4.08e-05,
+    "leading_edge": ["UGDH", "LGALS1", "DHCR24", "LDHA", "H2AZ1", "ALDH1A1", "ME1", "FASN", "BLVRA", "MIF", "FH", "ALDOA", "DLST", "SUCLG1", "ACSL4", "RAP1GDS1", "ACAT2", "HSDL2", "RDH11", "HADH", "CPT1A", "ECHS1", "ELOVL5", "YWHAH", "SDHA", "ADSL", "ECI2", "PDHA1", "SMS", "MDH2", "METAP1", "NTHL1", "CPOX", "ACAA2", "MDH1", "KMT5A", "CBR1", "S100A10", "HSD17B10", "ALDH3A2", "CBR3", "SUCLA2", "NCAPH2", "ADIPOR2", "HSPH1", "HSP90AA1", "ENO2", "IDH3B", "MIX23", "NSDHL", "IDI1"]
+  },
+  {
+    "name": "DNA REPAIR",
+    "nes": -1.809,
+    "padj": 4.96e-05,
+    "leading_edge": ["SSRP1", "PCNA", "NME1", "ARL6IP1", "HPRT1", "RFC4", "ZWINT", "NUDT21", "PNP", "DUT", "RFC2", "ALYREF", "SF3A3", "PRIM1", "RPA3", "IMPDH2", "FEN1", "POLD1", "RFC5", "RFC3", "TAF9", "NME4", "APRT", "LIG1", "ADRM1", "POLA2", "TAF6", "UMPS", "SAC3D1", "GPX4", "RAD51", "CSTF3", "ERCC8", "RALA", "NELFCD", "POLD3", "AK1", "POLA1", "POLR2G", "POLR2D", "SRSF6", "GTF2F1", "POLR2A", "ADA", "CETN2", "POLR2E", "NELFB", "TYMS", "POLR2F", "GTF2H3", "UPF3B", "GTF3C5", "POLH"]
+  }
+]

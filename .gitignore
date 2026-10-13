@@ -1,4 +1,5 @@
 data/
+!site/data/
 resources/
 results/salmon/
 results/rds/

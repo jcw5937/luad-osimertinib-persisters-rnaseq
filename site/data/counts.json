@@ -1,0 +1,702 @@
+[
+  {
+    "symbol": "BCAS1",
+    "counts": [
+      {
+        "sample": "PC9_DMSO_1",
+        "condition": "parental",
+        "value": 225.7
+      },
+      {
+        "sample": "PC9_DMSO_2",
+        "condition": "parental",
+        "value": 251.6
+      },
+      {
+        "sample": "PC9_DMSO_3",
+        "condition": "parental",
+        "value": 265.6
+      },
+      {
+        "sample": "PC9_OSI9_1",
+        "condition": "persister",
+        "value": 6301
+      },
+      {
+        "sample": "PC9_OSI9_2",
+        "condition": "persister",
+        "value": 6201
+      },
+      {
+        "sample": "PC9_OSI9_3",
+        "condition": "persister",
+        "value": 6525
+      }
+    ]
+  },
+  {
+    "symbol": "FBLN1",
+    "counts": [
+      {
+        "sample": "PC9_DMSO_1",
+        "condition": "parental",
+        "value": 1.198e+04
+      },
+      {
+        "sample": "PC9_DMSO_2",
+        "condition": "parental",
+        "value": 1.189e+04
+      },
+      {
+        "sample": "PC9_DMSO_3",
+        "condition": "parental",
+        "value": 1.153e+04
+      },
+      {
+        "sample": "PC9_OSI9_1",
+        "condition": "persister",
+        "value": 9.06e+04
+      },
+      {
+        "sample": "PC9_OSI9_2",
+        "condition": "persister",
+        "value": 8.644e+04
+      },
+      {
+        "sample": "PC9_OSI9_3",
+        "condition": "persister",
+        "value": 8.227e+04
+      }
+    ]
+  },
+  {
+    "symbol": "UPK2",
+    "counts": [
+      {
+        "sample": "PC9_DMSO_1",
+        "condition": "parental",
+        "value": 298.1
+      },
+      {
+        "sample": "PC9_DMSO_2",
+        "condition": "parental",
+        "value": 249.1
+      },
+      {
+        "sample": "PC9_DMSO_3",
+        "condition": "parental",
+        "value": 301.4
+      },
+      {
+        "sample": "PC9_OSI9_1",
+        "condition": "persister",
+        "value": 6633
+      },
+      {
+        "sample": "PC9_OSI9_2",
+        "condition": "persister",
+        "value": 6362
+      },
+      {
+        "sample": "PC9_OSI9_3",
+        "condition": "persister",
+        "value": 6279
+      }
+    ]
+  },
+  {
+    "symbol": "SEMA5A",
+    "counts": [
+      {
+        "sample": "PC9_DMSO_1",
+        "condition": "parental",
+        "value": 606.1
+      },
+      {
+        "sample": "PC9_DMSO_2",
+        "condition": "parental",
+        "value": 584.2
+      },
+      {
+        "sample": "PC9_DMSO_3",
+        "condition": "parental",
+        "value": 601.8
+      },
+      {
+        "sample": "PC9_OSI9_1",
+        "condition": "persister",
+        "value": 1.08e+04
+      },
+      {
+        "sample": "PC9_OSI9_2",
+        "condition": "persister",
+        "value": 1.124e+04
+      },
+      {
+        "sample": "PC9_OSI9_3",
+        "condition": "persister",
+        "value": 1.096e+04
+      }
+    ]
+  },
+  {
+    "symbol": "CDC20",
+    "counts": [
+      {
+        "sample": "PC9_DMSO_1",
+        "condition": "parental",
+        "value": 6063
+      },
+      {
+        "sample": "PC9_DMSO_2",
+        "condition": "parental",
+        "value": 6279
+      },
+      {
+        "sample": "PC9_DMSO_3",
+        "condition": "parental",
+        "value": 5715
+      },
+      {
+        "sample": "PC9_OSI9_1",
+        "condition": "persister",
+        "value": 398
+      },
+      {
+        "sample": "PC9_OSI9_2",
+        "condition": "persister",
+        "value": 387.6
+      },
+      {
+        "sample": "PC9_OSI9_3",
+        "condition": "persister",
+        "value": 394.6
+      }
+    ]
+  },
+  {
+    "symbol": "SPP1",
+    "counts": [
+      {
+        "sample": "PC9_DMSO_1",
+        "condition": "parental",
+        "value": 1876
+      },
+      {
+        "sample": "PC9_DMSO_2",
+        "condition": "parental",
+        "value": 1966
+      },
+      {
+        "sample": "PC9_DMSO_3",
+        "condition": "parental",
+        "value": 1896
+      },
+      {
+        "sample": "PC9_OSI9_1",
+        "condition": "persister",
+        "value": 2.199e+04
+      },
+      {
+        "sample": "PC9_OSI9_2",
+        "condition": "persister",
+        "value": 2.146e+04
+      },
+      {
+        "sample": "PC9_OSI9_3",
+        "condition": "persister",
+        "value": 2.32e+04
+      }
+    ]
+  },
+  {
+    "symbol": "IFIT2",
+    "counts": [
+      {
+        "sample": "PC9_DMSO_1",
+        "condition": "parental",
+        "value": 127.8
+      },
+      {
+        "sample": "PC9_DMSO_2",
+        "condition": "parental",
+        "value": 133.5
+      },
+      {
+        "sample": "PC9_DMSO_3",
+        "condition": "parental",
+        "value": 166.2
+      },
+      {
+        "sample": "PC9_OSI9_1",
+        "condition": "persister",
+        "value": 3961
+      },
+      {
+        "sample": "PC9_OSI9_2",
+        "condition": "persister",
+        "value": 3960
+      },
+      {
+        "sample": "PC9_OSI9_3",
+        "condition": "persister",
+        "value": 4068
+      }
+    ]
+  },
+  {
+    "symbol": "DUSP4",
+    "counts": [
+      {
+        "sample": "PC9_DMSO_1",
+        "condition": "parental",
+        "value": 7840
+      },
+      {
+        "sample": "PC9_DMSO_2",
+        "condition": "parental",
+        "value": 7896
+      },
+      {
+        "sample": "PC9_DMSO_3",
+        "condition": "parental",
+        "value": 8165
+      },
+      {
+        "sample": "PC9_OSI9_1",
+        "condition": "persister",
+        "value": 242.3
+      },
+      {
+        "sample": "PC9_OSI9_2",
+        "condition": "persister",
+        "value": 220.1
+      },
+      {
+        "sample": "PC9_OSI9_3",
+        "condition": "persister",
+        "value": 194.7
+      }
+    ]
+  },
+  {
+    "symbol": "CLU",
+    "counts": [
+      {
+        "sample": "PC9_DMSO_1",
+        "condition": "parental",
+        "value": 4390
+      },
+      {
+        "sample": "PC9_DMSO_2",
+        "condition": "parental",
+        "value": 4266
+      },
+      {
+        "sample": "PC9_DMSO_3",
+        "condition": "parental",
+        "value": 4271
+      },
+      {
+        "sample": "PC9_OSI9_1",
+        "condition": "persister",
+        "value": 3.179e+04
+      },
+      {
+        "sample": "PC9_OSI9_2",
+        "condition": "persister",
+        "value": 3.112e+04
+      },
+      {
+        "sample": "PC9_OSI9_3",
+        "condition": "persister",
+        "value": 3.066e+04
+      }
+    ]
+  },
+  {
+    "symbol": "GABARAPL1",
+    "counts": [
+      {
+        "sample": "PC9_DMSO_1",
+        "condition": "parental",
+        "value": 786
+      },
+      {
+        "sample": "PC9_DMSO_2",
+        "condition": "parental",
+        "value": 757.9
+      },
+      {
+        "sample": "PC9_DMSO_3",
+        "condition": "parental",
+        "value": 869
+      },
+      {
+        "sample": "PC9_OSI9_1",
+        "condition": "persister",
+        "value": 1.058e+04
+      },
+      {
+        "sample": "PC9_OSI9_2",
+        "condition": "persister",
+        "value": 1.02e+04
+      },
+      {
+        "sample": "PC9_OSI9_3",
+        "condition": "persister",
+        "value": 1.016e+04
+      }
+    ]
+  },
+  {
+    "symbol": "IGFBP3",
+    "counts": [
+      {
+        "sample": "PC9_DMSO_1",
+        "condition": "parental",
+        "value": 2448
+      },
+      {
+        "sample": "PC9_DMSO_2",
+        "condition": "parental",
+        "value": 2301
+      },
+      {
+        "sample": "PC9_DMSO_3",
+        "condition": "parental",
+        "value": 2095
+      },
+      {
+        "sample": "PC9_OSI9_1",
+        "condition": "persister",
+        "value": 2.542e+04
+      },
+      {
+        "sample": "PC9_OSI9_2",
+        "condition": "persister",
+        "value": 2.46e+04
+      },
+      {
+        "sample": "PC9_OSI9_3",
+        "condition": "persister",
+        "value": 2.536e+04
+      }
+    ]
+  },
+  {
+    "symbol": "ALPP",
+    "counts": [
+      {
+        "sample": "PC9_DMSO_1",
+        "condition": "parental",
+        "value": 6161
+      },
+      {
+        "sample": "PC9_DMSO_2",
+        "condition": "parental",
+        "value": 5609
+      },
+      {
+        "sample": "PC9_DMSO_3",
+        "condition": "parental",
+        "value": 5593
+      },
+      {
+        "sample": "PC9_OSI9_1",
+        "condition": "persister",
+        "value": 7.861e+04
+      },
+      {
+        "sample": "PC9_OSI9_2",
+        "condition": "persister",
+        "value": 7.393e+04
+      },
+      {
+        "sample": "PC9_OSI9_3",
+        "condition": "persister",
+        "value": 7.358e+04
+      }
+    ]
+  },
+  {
+    "symbol": "OLR1",
+    "counts": [
+      {
+        "sample": "PC9_DMSO_1",
+        "condition": "parental",
+        "value": 619.8
+      },
+      {
+        "sample": "PC9_DMSO_2",
+        "condition": "parental",
+        "value": 601.5
+      },
+      {
+        "sample": "PC9_DMSO_3",
+        "condition": "parental",
+        "value": 652.3
+      },
+      {
+        "sample": "PC9_OSI9_1",
+        "condition": "persister",
+        "value": 1.805e+04
+      },
+      {
+        "sample": "PC9_OSI9_2",
+        "condition": "persister",
+        "value": 1.748e+04
+      },
+      {
+        "sample": "PC9_OSI9_3",
+        "condition": "persister",
+        "value": 1.885e+04
+      }
+    ]
+  },
+  {
+    "symbol": "UCP2",
+    "counts": [
+      {
+        "sample": "PC9_DMSO_1",
+        "condition": "parental",
+        "value": 407.1
+      },
+      {
+        "sample": "PC9_DMSO_2",
+        "condition": "parental",
+        "value": 452.6
+      },
+      {
+        "sample": "PC9_DMSO_3",
+        "condition": "parental",
+        "value": 395.1
+      },
+      {
+        "sample": "PC9_OSI9_1",
+        "condition": "persister",
+        "value": 5760
+      },
+      {
+        "sample": "PC9_OSI9_2",
+        "condition": "persister",
+        "value": 5689
+      },
+      {
+        "sample": "PC9_OSI9_3",
+        "condition": "persister",
+        "value": 5571
+      }
+    ]
+  },
+  {
+    "symbol": "MUC20",
+    "counts": [
+      {
+        "sample": "PC9_DMSO_1",
+        "condition": "parental",
+        "value": 798.8
+      },
+      {
+        "sample": "PC9_DMSO_2",
+        "condition": "parental",
+        "value": 911.5
+      },
+      {
+        "sample": "PC9_DMSO_3",
+        "condition": "parental",
+        "value": 875.7
+      },
+      {
+        "sample": "PC9_OSI9_1",
+        "condition": "persister",
+        "value": 8448
+      },
+      {
+        "sample": "PC9_OSI9_2",
+        "condition": "persister",
+        "value": 8666
+      },
+      {
+        "sample": "PC9_OSI9_3",
+        "condition": "persister",
+        "value": 8428
+      }
+    ]
+  },
+  {
+    "symbol": "TACSTD2",
+    "counts": [
+      {
+        "sample": "PC9_DMSO_1",
+        "condition": "parental",
+        "value": 1.012e+04
+      },
+      {
+        "sample": "PC9_DMSO_2",
+        "condition": "parental",
+        "value": 1.002e+04
+      },
+      {
+        "sample": "PC9_DMSO_3",
+        "condition": "parental",
+        "value": 9712
+      },
+      {
+        "sample": "PC9_OSI9_1",
+        "condition": "persister",
+        "value": 9.994e+04
+      },
+      {
+        "sample": "PC9_OSI9_2",
+        "condition": "persister",
+        "value": 9.521e+04
+      },
+      {
+        "sample": "PC9_OSI9_3",
+        "condition": "persister",
+        "value": 9.646e+04
+      }
+    ]
+  },
+  {
+    "symbol": "AKR1C1",
+    "counts": [
+      {
+        "sample": "PC9_DMSO_1",
+        "condition": "parental",
+        "value": 2.594e+04
+      },
+      {
+        "sample": "PC9_DMSO_2",
+        "condition": "parental",
+        "value": 2.763e+04
+      },
+      {
+        "sample": "PC9_DMSO_3",
+        "condition": "parental",
+        "value": 2.619e+04
+      },
+      {
+        "sample": "PC9_OSI9_1",
+        "condition": "persister",
+        "value": 3223
+      },
+      {
+        "sample": "PC9_OSI9_2",
+        "condition": "persister",
+        "value": 3072
+      },
+      {
+        "sample": "PC9_OSI9_3",
+        "condition": "persister",
+        "value": 3388
+      }
+    ]
+  },
+  {
+    "symbol": "CD55",
+    "counts": [
+      {
+        "sample": "PC9_DMSO_1",
+        "condition": "parental",
+        "value": 422.3
+      },
+      {
+        "sample": "PC9_DMSO_2",
+        "condition": "parental",
+        "value": 403.6
+      },
+      {
+        "sample": "PC9_DMSO_3",
+        "condition": "parental",
+        "value": 448.7
+      },
+      {
+        "sample": "PC9_OSI9_1",
+        "condition": "persister",
+        "value": 6476
+      },
+      {
+        "sample": "PC9_OSI9_2",
+        "condition": "persister",
+        "value": 6603
+      },
+      {
+        "sample": "PC9_OSI9_3",
+        "condition": "persister",
+        "value": 6700
+      }
+    ]
+  },
+  {
+    "symbol": "AKR1B10",
+    "counts": [
+      {
+        "sample": "PC9_DMSO_1",
+        "condition": "parental",
+        "value": 1.901e+04
+      },
+      {
+        "sample": "PC9_DMSO_2",
+        "condition": "parental",
+        "value": 1.933e+04
+      },
+      {
+        "sample": "PC9_DMSO_3",
+        "condition": "parental",
+        "value": 1.99e+04
+      },
+      {
+        "sample": "PC9_OSI9_1",
+        "condition": "persister",
+        "value": 2029
+      },
+      {
+        "sample": "PC9_OSI9_2",
+        "condition": "persister",
+        "value": 1919
+      },
+      {
+        "sample": "PC9_OSI9_3",
+        "condition": "persister",
+        "value": 1972
+      }
+    ]
+  },
+  {
+    "symbol": "ASPH",
+    "counts": [
+      {
+        "sample": "PC9_DMSO_1",
+        "condition": "parental",
+        "value": 2.078e+04
+      },
+      {
+        "sample": "PC9_DMSO_2",
+        "condition": "parental",
+        "value": 2.27e+04
+      },
+      {
+        "sample": "PC9_DMSO_3",
+        "condition": "parental",
+        "value": 2.128e+04
+      },
+      {
+        "sample": "PC9_OSI9_1",
+        "condition": "persister",
+        "value": 2482
+      },
+      {
+        "sample": "PC9_OSI9_2",
+        "condition": "persister",
+        "value": 2442
+      },
+      {
+        "sample": "PC9_OSI9_3",
+        "condition": "persister",
+        "value": 2411
+      }
+    ]
+  }
+]

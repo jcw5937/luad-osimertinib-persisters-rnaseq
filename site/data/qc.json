@@ -1,0 +1,50 @@
+[
+  {
+    "pc1": -52.75,
+    "pc2": 14.85,
+    "sample": "PC9_DMSO_1",
+    "condition": "parental",
+    "pc1_pct": 90.4,
+    "pc2_pct": 2.5
+  },
+  {
+    "pc1": -52.58,
+    "pc2": -3.875,
+    "sample": "PC9_DMSO_2",
+    "condition": "parental",
+    "pc1_pct": 90.4,
+    "pc2_pct": 2.5
+  },
+  {
+    "pc1": -50.83,
+    "pc2": -11.12,
+    "sample": "PC9_DMSO_3",
+    "condition": "parental",
+    "pc1_pct": 90.4,
+    "pc2_pct": 2.5
+  },
+  {
+    "pc1": 51.3,
+    "pc2": -2.597,
+    "sample": "PC9_OSI9_1",
+    "condition": "persister",
+    "pc1_pct": 90.4,
+    "pc2_pct": 2.5
+  },
+  {
+    "pc1": 52.76,
+    "pc2": 7.867,
+    "sample": "PC9_OSI9_2",
+    "condition": "persister",
+    "pc1_pct": 90.4,
+    "pc2_pct": 2.5
+  },
+  {
+    "pc1": 52.11,
+    "pc2": -5.129,
+    "sample": "PC9_OSI9_3",
+    "condition": "persister",
+    "pc1_pct": 90.4,
+    "pc2_pct": 2.5
+  }
+]
