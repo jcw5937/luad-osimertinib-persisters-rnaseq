@@ -52,6 +52,7 @@
         <a href="#de">Differential Expression</a>
         <a href="#pathways">Pathways</a>
         <a href="#survival">Survival</a>
+        <a href="#glossary">Glossary</a>
       </nav>
 
       <div class="helix-controls" aria-label="Helix display controls">
@@ -87,10 +88,20 @@
     <section class="section" id="qc">
       <div class="section__inner">
         <h2>Quality Control</h2>
-        <p class="section__desc">
-          PCA of variance-stabilized counts (DESeq2 vst), colored by condition.
-          Well-separated clusters confirm a strong persister transcriptional state.
-        </p>
+        <div class="finding">
+          <div>
+            <span class="finding__label">Key finding</span>
+            <p class="finding__key">The six samples split cleanly into two groups: surviving the drug changed the cells far more than anything else did.</p>
+          </div>
+          <div>
+            <span class="finding__label">How to read this chart</span>
+            <p class="finding__read">Each dot is one dish of cells. Dishes with similar gene activity sit close together; dishes that differ sit far apart. Left to right is the single biggest difference in the whole dataset, and it separates the untreated dishes (purple) from the survivors (teal) perfectly. The percentage on each axis shows how much of all the differences that direction captures.</p>
+          </div>
+          <div class="finding__methods">
+            <span class="finding__label">Methods &amp; statistics</span>
+            <p>Principal component analysis (PCA) of variance-stabilized expression for all expressed genes (DESeq2 vst, blind to sample group). PC1 (<span data-fill="pc1">…</span>% of variance) separates the two conditions; replicates cluster tightly (n = 3 per group).</p>
+          </div>
+        </div>
         <div class="chart-wrap" id="qc-pca"></div>
       </div>
     </section>
@@ -99,11 +110,20 @@
     <section class="section" id="de">
       <div class="section__inner">
         <h2>Differential Expression</h2>
-        <p class="section__desc">
-          Volcano plot — persisters vs. DMSO control (DESeq2 Wald test, Benjamini-Hochberg).
-          <span style="color:var(--color-teal);font-weight:600">Teal</span> = up in persisters &nbsp;·&nbsp;
-          <span style="color:var(--color-purple);font-weight:600">Purple</span> = down in persisters.
-        </p>
+        <div class="finding">
+          <div>
+            <span class="finding__label">Key finding</span>
+            <p class="finding__key">About <span data-fill="significant_genes_rounded">…</span> genes changed at least two-fold in the cells that survived. Some switched way down, others way up.</p>
+          </div>
+          <div>
+            <span class="finding__label">How to read this chart</span>
+            <p class="finding__read">Each dot is one gene. Left to right shows how much it changed: right of center means more active in the survivors, left means less active. Each step of 1 is a doubling, so 3 means 8 times more. Bottom to top shows how confident we are that the gene changed at least two-fold; higher is more certain. Colored dots passed both bars; gray dots didn't.</p>
+          </div>
+          <div class="finding__methods">
+            <span class="finding__label">Methods &amp; statistics</span>
+            <p>DESeq2 (~ condition, Wald test) on gene-level counts from Salmon and tximport. Genes are called differentially expressed by testing |log₂ fold change| &gt; 1 directly (lfcThreshold = 1) at a Benjamini–Hochberg false discovery rate (FDR) below 0.05; <span data-fill="significant_genes">…</span> of <span data-fill="genes_tested">…</span> tested genes pass. Plotted fold changes are shrunken estimates (apeglm) to reduce noise from rarely detected genes.</p>
+          </div>
+        </div>
         <div class="chart-wrap" id="de-volcano"></div>
       </div>
     </section>
@@ -112,10 +132,20 @@
     <section class="section" id="counts">
       <div class="section__inner">
         <h2>Top Gene Counts</h2>
-        <p class="section__desc">
-          Normalized expression (median-of-ratios) for the most significant differentially
-          expressed genes, per sample.
-        </p>
+        <div class="finding">
+          <div>
+            <span class="finding__label">Key finding</span>
+            <p class="finding__key">The three dishes in each group agree closely, so the differences are real rather than noise. Some genes changed more than 20-fold.</p>
+          </div>
+          <div>
+            <span class="finding__label">How to read this chart</span>
+            <p class="finding__read">Each row is one gene. Each dot is that gene's activity in one dish: purple for untreated, teal for survivors. Farther right means more active. The scale goes up in steps of ten (10, 100, 1,000), so a gap of one step is a tenfold change. Genes in the top block rose in the survivors; genes in the bottom block fell.</p>
+          </div>
+          <div class="finding__methods">
+            <span class="finding__label">Methods &amp; statistics</span>
+            <p>Normalized counts (DESeq2 median-of-ratios size factors) for the 20 genes with the smallest adjusted p-values in the |log₂FC| &gt; 1 test, shown per sample on a log₁₀ scale. Fold changes for these genes range from about <span data-fill="fold_min">…</span>- to <span data-fill="fold_max">…</span>-fold (computed from the group means).</p>
+          </div>
+        </div>
         <div class="chart-wrap" id="counts-chart"></div>
       </div>
     </section>
@@ -124,10 +154,20 @@
     <section class="section" id="pathways">
       <div class="section__inner">
         <h2>Pathway Enrichment</h2>
-        <p class="section__desc">
-          Gene set enrichment analysis (fgsea, Hallmark gene sets, 1&thinsp;000 permutations).
-          Positive NES = enriched in persisters; negative = depleted.
-        </p>
+        <div class="finding">
+          <div>
+            <span class="finding__label">Key finding</span>
+            <p class="finding__key">The survivors shut down their cell-division machinery (they stopped growing) and switched on immune-alarm (interferon) and inflammation programs.</p>
+          </div>
+          <div>
+            <span class="finding__label">How to read this chart</span>
+            <p class="finding__read">Each bar is a pathway: a team of genes that work together on one job, such as copying DNA before a cell divides. Bars pointing right are teams that became more active in the survivors; bars pointing left became less active. The longer the bar, the more consistently the whole team moved together. Hover over a bar for a plain-English description.</p>
+          </div>
+          <div class="finding__methods">
+            <span class="finding__label">Methods &amp; statistics</span>
+            <p>Pre-ranked gene set enrichment analysis (fgsea, multilevel method) on the <span data-fill="n_pathways">…</span> MSigDB Hallmark gene sets, with genes ranked by the DESeq2 Wald statistic. Shown: the 10 strongest increases and 10 strongest decreases by normalized enrichment score (NES); <span data-fill="n_sig_pathways">…</span> of <span data-fill="n_pathways">…</span> sets are significant at FDR &lt; 0.05. Hallmark names reflect where each gene set was first defined; some (e.g. Spermatogenesis, Myogenesis) overlap with general cell programs.</p>
+          </div>
+        </div>
         <div class="chart-wrap" id="pathways-chart"></div>
       </div>
     </section>
@@ -136,11 +176,39 @@
     <section class="section" id="survival">
       <div class="section__inner">
         <h2>TCGA-LUAD Survival</h2>
-        <p class="section__desc">
-          Kaplan-Meier curves stratified by persister gene-signature score in TCGA-LUAD
-          (median split). Cox proportional-hazards model adjusted for stage and age.
-        </p>
+        <div class="finding">
+          <div>
+            <span class="finding__label">Key finding</span>
+            <p class="finding__key">Across <span data-fill="n_patients">…</span> lung cancer patients, higher activity of these "survivor" genes didn't predict how long people lived. One possible reason: these patients never received the drug.</p>
+          </div>
+          <div>
+            <span class="finding__label">How to read this chart</span>
+            <p class="finding__read">The two lines follow two groups of patients over time. One group's tumors had above-middle activity of the 25 survivor genes; the other had below-middle activity. Each line starts at 100% and steps down each time a patient in that group dies. If the genes mattered, the lines would pull apart; here they stay close, and the gap in the middle is within normal noise. The chart stops at 90 months because too few patients were followed longer than that.</p>
+          </div>
+          <div class="finding__methods">
+            <span class="finding__label">Methods &amp; statistics</span>
+            <p>Signature: the 25 most significantly increased persister genes (|log₂FC| &gt; 1 test, FDR &lt; 0.05, ranked by Wald statistic). Each TCGA-LUAD primary tumor (<span data-fill="n_patients">…</span> patients, <span data-fill="n_events">…</span> deaths, median time on study <span data-fill="median_months">…</span> months) is scored as the mean z-scored, variance-stabilized expression across those genes. Cox proportional-hazards model with the score as a continuous variable, adjusted for age and stage (<span data-fill="n_adjusted">…</span> patients): HR <span data-fill="hr">…</span> per standard deviation (95% CI <span data-fill="lo">…</span>–<span data-fill="hi">…</span>, p = <span data-fill="p">…</span>); unadjusted HR <span data-fill="hr_u">…</span> (<span data-fill="lo_u">…</span>–<span data-fill="hi_u">…</span>). Proportional-hazards assumption checked (Schoenfeld test, p = <span data-fill="ph_p">…</span>). Kaplan–Meier median split shown for display only.</p>
+          </div>
+        </div>
         <div class="chart-wrap" id="survival-chart"></div>
+      </div>
+    </section>
+
+    <!-- Glossary -->
+    <section class="section" id="glossary">
+      <div class="section__inner">
+        <h2>Glossary</h2>
+        <dl class="glossary">
+          <div><dt>Gene</dt><dd>a stretch of DNA with instructions for making one product the cell uses.</dd></div>
+          <div><dt>Gene expression</dt><dd>how actively a gene's instructions are being read right now.</dd></div>
+          <div><dt>RNA-seq</dt><dd>a method that counts the instruction copies (RNA) in a sample, to measure every gene's activity at once.</dd></div>
+          <div><dt>Persister</dt><dd>a cancer cell that survives a drug by going dormant instead of dying.</dd></div>
+          <div><dt>Fold change</dt><dd>how many times higher or lower a gene's activity is between two groups.</dd></div>
+          <div><dt>FDR (false discovery rate)</dt><dd>the expected share of false alarms among results called significant.</dd></div>
+          <div><dt>Pathway</dt><dd>a group of genes that work together on one job.</dd></div>
+          <div><dt>Hazard ratio</dt><dd>how much a factor raises (above 1) or lowers (below 1) the risk of death at any moment.</dd></div>
+          <div><dt>Kaplan–Meier curve</dt><dd>a line showing the share of a group still alive over time.</dd></div>
+        </dl>
       </div>
     </section>
 

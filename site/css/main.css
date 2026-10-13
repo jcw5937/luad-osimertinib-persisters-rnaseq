@@ -282,6 +282,60 @@ img, canvas { display: block; max-width: 100%; }
 
 .site-footer a:hover { text-decoration: underline; }
 
+/* ── Finding blocks (Key finding / How to read / Methods) ──────── */
+.finding {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-6);
+  max-width: 72ch;
+}
+
+.finding__label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+  margin-bottom: var(--sp-1);
+}
+
+.finding__key {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.finding__read { font-size: 0.95rem; color: var(--color-text); }
+
+.finding__methods { font-size: 0.82rem; color: var(--color-muted); }
+.finding__methods .finding__label { color: var(--color-muted); }
+
+/* ── Glossary ──────────────────────────────────────────────────── */
+.glossary {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--sp-4);
+}
+
+.glossary dt { font-weight: 700; color: var(--color-text); }
+.glossary dd { margin: 0 0 var(--sp-4) 0; color: var(--color-muted); font-size: 0.9rem; }
+
+/* ── Credits ───────────────────────────────────────────────────── */
+.credits { max-width: 72ch; }
+.credits h3 {
+  font-size: 0.95rem;
+  margin: var(--sp-6) 0 var(--sp-2);
+  color: var(--color-text);
+}
+.credits p, .credits li { font-size: 0.85rem; color: var(--color-muted); line-height: 1.6; }
+.credits ul { padding-left: var(--sp-6); }
+.credits a { color: var(--color-teal-dark); }
+
 /* ── Responsive ────────────────────────────────────────────────── */
 @media (max-width: 640px) {
   .hall__content { margin-left: 0; padding: var(--sp-6) var(--sp-4); }
