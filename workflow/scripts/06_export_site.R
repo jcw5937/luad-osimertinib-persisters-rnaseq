@@ -39,16 +39,27 @@ headline <- if (!is.na(direction)) {
 message("Headline direction: ", if (is.na(direction)) "inconclusive" else direction,
         " | CI: ", round(ci_lo, 2), "-", round(ci_hi, 2))
 
+# Hallmark pathway totals come from the full fgsea table (all 50 sets tested)
+n_pathways     <- nrow(fgsea)
+n_sig_pathways <- sum(fgsea$padj < snakemake@params$alpha, na.rm = TRUE)
+
 summary_out <- list(
   headline       = headline,
   samples        = ncol(dds),
   genes_tested   = nrow(res),
   significant_genes = sum(res$padj_lfc < snakemake@params$alpha, na.rm = TRUE),
+  n_pathways     = n_pathways,
+  n_sig_pathways = n_sig_pathways,
   hazard_ratio   = round(adj$HR, 4),
   hr_ci_low      = round(adj$lo95, 4),
   hr_ci_high     = round(adj$hi95, 4)
 )
-write(toJSON(summary_out, auto_unbox = TRUE, pretty = TRUE), snakemake@output$summary)
+# digits = I(4): 4 significant figures, not 4 decimal places.  The jsonlite
+# default rounds to 4 decimals, which collapses every p-value below 5e-5 to 0
+# (misplacing ~110 genes at the top of the volcano).  I(4) keeps small numbers
+# in scientific notation.  Applied to every toJSON() call below.
+write(toJSON(summary_out, auto_unbox = TRUE, pretty = TRUE, digits = I(4)),
+      snakemake@output$summary)
 message("summary.json written")
 
 # ── qc.json ──────────────────────────────────────────────────────────────────
@@ -61,8 +72,13 @@ pca_df <- as.data.table(pca$x[, 1:2])
 pca_df[, sample    := colnames(vsd)]
 pca_df[, condition := vsd$condition]
 setnames(pca_df, c("PC1", "PC2"), c("pc1", "pc2"))
+# % of variance each axis explains — repeated on every record so the axis
+# titles in charts.js can read it without a separate wrapper object.
+pca_df[, pc1_pct := pct[1]]
+pca_df[, pc2_pct := pct[2]]
 qc_list <- lapply(seq_len(nrow(pca_df)), function(i) as.list(pca_df[i]))
-write(toJSON(qc_list, auto_unbox = TRUE, pretty = TRUE), snakemake@output$qc)
+write(toJSON(qc_list, auto_unbox = TRUE, pretty = TRUE, digits = I(4)),
+      snakemake@output$qc)
 message("qc.json written  (PC1 ", pct[1], "%, PC2 ", pct[2], "%)")
 
 # ── de.json ──────────────────────────────────────────────────────────────────
@@ -75,7 +91,7 @@ de <- res[!is.na(padj_lfc) & !is.na(gene_name), .(
   padj     = signif(padj_lfc, 4),
   mean_expr = round(baseMean, 2)
 )]
-write(toJSON(de, pretty = TRUE), snakemake@output$de)
+write(toJSON(de, pretty = TRUE, digits = I(4)), snakemake@output$de)
 message("de.json written  (", nrow(de), " genes)")
 
 # ── counts.json ──────────────────────────────────────────────────────────────
@@ -94,7 +110,8 @@ counts_list <- lapply(top20_ids, function(gid) {
   ))
   list(symbol = sym, counts = cnts)
 })
-write(toJSON(counts_list, auto_unbox = TRUE, pretty = TRUE), snakemake@output$counts)
+write(toJSON(counts_list, auto_unbox = TRUE, pretty = TRUE, digits = I(4)),
+      snakemake@output$counts)
 message("counts.json written")
 
 # ── pathways.json ─────────────────────────────────────────────────────────────
@@ -109,7 +126,8 @@ pathways_list <- lapply(seq_len(nrow(pw)), function(i) list(
   padj   = signif(pw$padj[i], 3),
   leading_edge = I(strsplit(pw$leadingEdge[i], ";")[[1]])
 ))
-write(toJSON(pathways_list, auto_unbox = TRUE, pretty = TRUE), snakemake@output$pathways)
+write(toJSON(pathways_list, auto_unbox = TRUE, pretty = TRUE, digits = I(4)),
+      snakemake@output$pathways)
 message("pathways.json written  (", nrow(pw), " pathways)")
 
 # ── survival.json ────────────────────────────────────────────────────────────
@@ -120,9 +138,14 @@ fit <- survfit(Surv(os_months, os_event) ~ group, data = clin_sc)
 sdf <- as.data.table(summary(fit)[c("strata","time","surv","n.risk")])
 sdf[, label := sub("group=", "", strata)]
 
+# Per-group totals for the curve labels (n) and the plain-English summary (deaths)
+grp <- clin_sc[, .(n = .N, deaths = sum(os_event)), by = group]
+
 curves <- lapply(unique(sdf$label), function(lbl) {
   d <- sdf[label == lbl]
   list(label    = lbl,
+       n        = grp[group == lbl, n],
+       deaths   = grp[group == lbl, deaths],
        time     = I(round(d$time, 2)),
        survival = I(round(d$surv, 4)),
        at_risk  = I(d$n.risk))
@@ -136,6 +159,28 @@ cox_rows <- lapply(seq_len(nrow(cox_tab)), function(i) list(
   p     = signif(cox_tab$p[i], 3)
 ))
 
-surv_out <- list(curves = curves, cox = cox_rows)
-write(toJSON(surv_out, auto_unbox = TRUE, pretty = TRUE), snakemake@output$survival)
-message("survival.json written")
+# Per-model patient counts and the Schoenfeld proportional-hazards p-value for
+# the score are products of the Cox fit, which lives in 05_survival.R.  We refit
+# here from the scored clinical table to read them out; the model spec MUST stay
+# identical to 05_survival.R (continuous scaled score, age + simplified stage).
+# The fit is deterministic, so these reproduce 05 exactly without re-running it.
+clin_sc[, stage_simple := factor(sub("^Stage (I{1,3}V?).*", "\\1", stage))]
+m_unadj <- coxph(Surv(os_time, os_event) ~ scale(score), data = clin_sc)
+m_adj   <- coxph(Surv(os_time, os_event) ~ scale(score) + age + stage_simple,
+                 data = clin_sc)
+ph_p_score <- cox.zph(m_adj)$table["scale(score)", "p"]
+
+surv_out <- list(
+  curves        = curves,
+  cox           = cox_rows,
+  n_patients    = nrow(clin_sc),
+  n_events      = sum(clin_sc$os_event),
+  median_months = round(median(clin_sc$os_time, na.rm = TRUE) / 30.44, 1),
+  n_unadjusted  = m_unadj$n,
+  n_adjusted    = m_adj$n,
+  ph_p_score    = signif(ph_p_score, 3)
+)
+write(toJSON(surv_out, auto_unbox = TRUE, pretty = TRUE, digits = I(4)),
+      snakemake@output$survival)
+message(sprintf("survival.json written  (n=%d, events=%d, PH score p=%.2f)",
+                nrow(clin_sc), sum(clin_sc$os_event), ph_p_score))
