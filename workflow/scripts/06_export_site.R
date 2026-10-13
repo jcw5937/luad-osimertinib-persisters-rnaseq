@@ -43,7 +43,7 @@ summary_out <- list(
   headline       = headline,
   samples        = ncol(dds),
   genes_tested   = nrow(res),
-  significant_genes = sum(res$padj < snakemake@params$alpha, na.rm = TRUE),
+  significant_genes = sum(res$padj_lfc < snakemake@params$alpha, na.rm = TRUE),
   hazard_ratio   = round(adj$HR, 4),
   hr_ci_low      = round(adj$lo95, 4),
   hr_ci_high     = round(adj$hi95, 4)
@@ -66,20 +66,22 @@ write(toJSON(qc_list, auto_unbox = TRUE, pretty = TRUE), snakemake@output$qc)
 message("qc.json written  (PC1 ", pct[1], "%, PC2 ", pct[2], "%)")
 
 # ── de.json ──────────────────────────────────────────────────────────────────
-# Use lfc_shrunk for display (apeglm reduces noise for low-count genes)
-de <- res[!is.na(padj) & !is.na(gene_name), .(
+# Use lfc_shrunk for display (apeglm reduces noise for low-count genes) and
+# padj_lfc (the |LFC| > 1 test) so the site volcano matches fig3 and the
+# signature definition — one significance test everywhere.
+de <- res[!is.na(padj_lfc) & !is.na(gene_name), .(
   symbol   = gene_name,
   log2fc   = round(lfc_shrunk, 4),
-  padj     = signif(padj, 4),
+  padj     = signif(padj_lfc, 4),
   mean_expr = round(baseMean, 2)
 )]
 write(toJSON(de, pretty = TRUE), snakemake@output$de)
 message("de.json written  (", nrow(de), " genes)")
 
 # ── counts.json ──────────────────────────────────────────────────────────────
-# Top 20 DE genes by padj, size-factor normalized counts per sample
+# Top 20 DE genes by padj_lfc, size-factor normalized counts per sample
 # Size-factor normalization (not VST) keeps the y-axis in interpretable count units.
-top20_ids <- head(res[!is.na(padj)][order(padj)], 20)$gene_id
+top20_ids <- head(res[!is.na(padj_lfc)][order(padj_lfc)], 20)$gene_id
 norm_counts <- counts(dds, normalized = TRUE)
 cd <- as.data.table(as.data.frame(colData(dds)), keep.rownames = "sample")
 
@@ -92,7 +94,7 @@ counts_list <- lapply(top20_ids, function(gid) {
   ))
   list(symbol = sym, counts = cnts)
 })
-write(toJSON(counts_list, pretty = TRUE), snakemake@output$counts)
+write(toJSON(counts_list, auto_unbox = TRUE, pretty = TRUE), snakemake@output$counts)
 message("counts.json written")
 
 # ── pathways.json ─────────────────────────────────────────────────────────────
@@ -105,9 +107,9 @@ pathways_list <- lapply(seq_len(nrow(pw)), function(i) list(
   name   = pw$name[i],
   nes    = round(pw$NES[i], 3),
   padj   = signif(pw$padj[i], 3),
-  leading_edge = strsplit(pw$leadingEdge[i], ";")[[1]]
+  leading_edge = I(strsplit(pw$leadingEdge[i], ";")[[1]])
 ))
-write(toJSON(pathways_list, pretty = TRUE), snakemake@output$pathways)
+write(toJSON(pathways_list, auto_unbox = TRUE, pretty = TRUE), snakemake@output$pathways)
 message("pathways.json written  (", nrow(pw), " pathways)")
 
 # ── survival.json ────────────────────────────────────────────────────────────
@@ -115,15 +117,15 @@ message("pathways.json written  (", nrow(pw), " pathways)")
 # Months is more interpretable for a clinical audience than days or years.
 clin_sc[, os_months := os_time / 30.44]
 fit <- survfit(Surv(os_months, os_event) ~ group, data = clin_sc)
-sdf <- as.data.table(summary(fit, times = NULL)[c("strata","time","surv","n.risk")])
+sdf <- as.data.table(summary(fit)[c("strata","time","surv","n.risk")])
 sdf[, label := sub("group=", "", strata)]
 
 curves <- lapply(unique(sdf$label), function(lbl) {
   d <- sdf[label == lbl]
   list(label    = lbl,
-       time     = round(d$time, 2),
-       survival = round(d$surv, 4),
-       at_risk  = d$n.risk)
+       time     = I(round(d$time, 2)),
+       survival = I(round(d$surv, 4)),
+       at_risk  = I(d$n.risk))
 })
 
 cox_rows <- lapply(seq_len(nrow(cox_tab)), function(i) list(
@@ -135,5 +137,5 @@ cox_rows <- lapply(seq_len(nrow(cox_tab)), function(i) list(
 ))
 
 surv_out <- list(curves = curves, cox = cox_rows)
-write(toJSON(surv_out, pretty = TRUE), snakemake@output$survival)
+write(toJSON(surv_out, auto_unbox = TRUE, pretty = TRUE), snakemake@output$survival)
 message("survival.json written")
