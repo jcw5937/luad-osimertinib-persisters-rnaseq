@@ -1,0 +1,8 @@
+[2026-10-09 19:20:35,609] multiqc.core.version_check                         [WARNING]  MultiQC Version v1.35 now available!
+[2026-10-09 19:20:35,615] multiqc.core.file_search                           [INFO   ]  Search path: /Users/jakewillingham/Documents/RNA-Sequencing/luad-osimertinib-persisters-rnaseq/results/qc
+[2026-10-09 19:20:35,616] multiqc.core.file_search                           [INFO   ]  Search path: /Users/jakewillingham/Documents/RNA-Sequencing/luad-osimertinib-persisters-rnaseq/results/salmon
+[2026-10-09 19:20:36,033] multiqc.modules.salmon.salmon                      [INFO   ]  Found 6 meta reports
+[2026-10-09 19:20:36,033] multiqc.modules.salmon.salmon                      [INFO   ]  Found 6 fragment length distributions
+[2026-10-09 19:20:36,033] multiqc.modules.salmon.salmon                      [INFO   ]  Found 6 library format counts reports
+[2026-10-09 19:20:36,066] multiqc.modules.fastp.fastp                        [INFO   ]  Found 6 reports
+[2026-10-09 19:20:36,119] multiqc.modules.fastqc.fastqc                      [INFO   ]  Found 12 reports
