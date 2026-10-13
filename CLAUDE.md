@@ -29,6 +29,11 @@ Pipeline: Snakemake (workflow/), config in config/. Ends in a results website (s
 | survival.json | curve points per group (time, survival, at risk) and the Cox table |
 
 ## Working rules
+- Never run Snakemake commands. Jake runs all pipeline steps in his own Terminal.
+  You may edit code, read logs and outputs, and commit.
+- Use American English spelling in all reader-facing text.
+- Every result number shown on the site must be read from site/data/*.json, never
+  typed into HTML.
 - Explain any statistical choice before writing the code for it.
 - Keep every threshold and seed in config/config.yaml.
 
