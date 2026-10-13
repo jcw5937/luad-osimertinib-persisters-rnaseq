@@ -14,7 +14,7 @@ snakemake --use-conda --cores 8                       # full run
 ## Data
 - RNA-seq: PC9 parental (DMSO) vs PC9 osimertinib drug-tolerant persisters (day 9), n = 3 vs 3
   (GSM8083374–376 vs GSM8083380–382, GEO GSE255958).
-- Validation: TCGA-LUAD primary tumours (GDC, STAR counts + clinical).
+- Validation: TCGA-LUAD primary tumors (GDC, STAR counts + clinical).
 - Reference: GENCODE v46 human transcriptome; MSigDB Hallmark gene sets.
 
 ### Possible extensions (not included)

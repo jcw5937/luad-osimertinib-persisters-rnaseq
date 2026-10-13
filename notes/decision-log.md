@@ -67,9 +67,9 @@ Source material for the README's Methods, Results and Limitations sections.
 - **2026-09-30 · [assumed]** `vst(blind = TRUE)` for PCA and heatmaps, so the QC views don't use the group labels.
 - **2026-09-30 · [assumed]** Pathways: fgsea on the 50 MSigDB Hallmark gene sets, genes ranked by Wald statistic, set sizes 15–500, duplicate gene symbols collapsed to the strongest statistic. clusterProfiler GO is an optional cross-check.
 - **2026-09-30 · [assumed]** TCGA-LUAD validation:
-  - data: TCGAbiolinks, STAR counts, primary tumours only, one sample per patient, VST; endpoint = overall survival;
+  - data: TCGAbiolinks, STAR counts, primary tumors only, one sample per patient, VST; endpoint = overall survival;
   - signature: top 25 up-regulated persister genes that pass the |LFC| > 1 test at FDR < 0.05, ranked by Wald statistic;
-  - score: mean z-score of those genes per tumour;
+  - score: mean z-score of those genes per tumor;
   - test: Cox model on the continuous score (hazard ratio per SD), unadjusted and adjusted for age and stage, with a proportional-hazards check (`cox.zph`);
   - Kaplan-Meier curves by median split are for the figure only; the Cox model is the actual test;
   - per-gene Cox models with BH correction go in a supplementary table (exploratory).
@@ -92,7 +92,7 @@ Source material for the README's Methods, Results and Limitations sections.
 - **2026-10-05 · [assumed]** Hosting: GitHub Pages from `/docs`; Snakemake rules `site_data` (R script writes the JSON) and `website` (copies `site/` to `docs/`).
 - **2026-10-06 · [assumed]** The site headline is generated from the adjusted hazard ratio and its 95% CI: "worse" if the CI is above 1, "better" if below 1, "no clear association" if it crosses 1.
 - **2026-10-06 · [confirmed]** ~~Hero helix used purple/teal brand colors for the backbones, placed the helix centrally (overlapping title text on wide screens), had diametrically opposite strands (no groove asymmetry), and used translucent white rungs with no base identity.~~ **Replaced by:** B-DNA helix (2026-10-06, this commit).
-  What changed: (1) Both backbone strands and phosphate nodes are neutral light grey (`#b0b8c8`) — purple/teal are reserved for data. (2) Strand 2 is offset 150° (5π/6) from strand 1, producing a visible major/minor groove as in canonical B-form. (3) Base pairs are two abutting half-cylinders colored by nucleotide identity: A=sage `#72b082`, T=amber `#c49050`, G=steel blue `#6090b8`, C=mauve `#9a7eb0`; no diagonal links. (4) On wide screens (>640 px) the helix shifts right so it never overlaps the hero text; on narrow screens it centers and fades to 0.18 opacity behind the text. (5) Lighting changed to neutral white/cool directional lights only (no colored point lights).
+  What changed: (1) Both backbone strands and phosphate nodes are neutral light gray (`#b0b8c8`) — purple/teal are reserved for data. (2) Strand 2 is offset 150° (5π/6) from strand 1, producing a visible major/minor groove as in canonical B-form. (3) Base pairs are two abutting half-cylinders colored by nucleotide identity: A=sage `#72b082`, T=amber `#c49050`, G=steel blue `#6090b8`, C=mauve `#9a7eb0`; no diagonal links. (4) On wide screens (>640 px) the helix shifts right so it never overlaps the hero text; on narrow screens it centers and fades to 0.18 opacity behind the text. (5) Lighting changed to neutral white/cool directional lights only (no colored point lights).
 
 ### Way of working
 - **2026-09-30 · [confirmed]** Plan in Claude chat; build with Claude Code ("vibe coding").
@@ -127,7 +127,7 @@ Source material for the README's Methods, Results and Limitations sections.
 | 2026-10-12 | DESeq2: gene counts, size factors, dispersion | Sanity of normalization; confirm strong drug effect | passed: 10,445 genes FDR < 0.05 (plain Wald); 2,304 genes |LFC| > 1 AND FDR < 0.05; strong persister transcriptional state confirmed |
 | 2026-10-12 | Replicates cluster by condition in PCA | Confirms the drug effect dominates and labels are right | passed: DMSO (purple) and OSI9 (teal) form tight, well-separated clusters; OSI9_1 sits squarely with its group — duplication-rate flag cleared |
 | 2026-10-12 | Positive controls: EGFR-MAPK output genes (DUSP6, SPRY4, ETV4/5) and cell-cycle sets (E2F, G2M, MYC) down in persisters | Expected biology; confirms the analysis and labels are correct | passed: DUSP6, ETV4/5, SPRY4, FOSL1, EGR1, MKI67 down in persisters; E2F targets (NES −3.23), MYC V1 (−3.08), G2M (−3.07) most depleted fgsea sets — consistent with EGFR inhibition and cell-cycle exit |
-| 2026-10-13 | TCGA-LUAD patient count, death events, follow-up, stage breakdown | Know the power and balance before modelling | passed: 504 patients, 182 events (36.1%), median follow-up 658 days — matches the expected TCGA-LUAD cohort; 25/25 signature genes found in the expression matrix |
+| 2026-10-13 | TCGA-LUAD patient count, death events, follow-up, stage breakdown | Know the power and balance before modeling | passed: 504 patients, 182 events (36.1%), median follow-up 658 days — matches the expected TCGA-LUAD cohort; 25/25 signature genes found in the expression matrix |
 | 2026-10-13 | Proportional-hazards assumption (`cox.zph`) | Cox model validity | passed: GLOBAL p = 0.14; score p = 0.34, age p = 0.51, stage p = 0.13 — no violation |
 | 2026-10-13 | Signature-score Cox model in TCGA-LUAD | The validation endpoint of the project | done: adjusted HR 1.06 (95% CI 0.91–1.24, p = 0.45); unadjusted HR 1.04 (0.89–1.21, p = 0.61). The CI crosses 1, so the site headline reports "no clear association" — reported honestly per the headline rules. Per-gene Cox (exploratory): only UCA1 at FDR < 0.05 (HR 1.27 per SD, padj 0.011) |
 | Week 3 | Fresh clone + fresh conda run on subset data | Proves the pipeline reproduces with no manual steps | planned |
@@ -140,7 +140,7 @@ Source material for the README's Methods, Results and Limitations sections.
 
 - **2026-09-30** One cell line (PC9), in vitro only, 3 replicates per group: limited power, small effects can be missed.
 - **2026-09-30** Bulk RNA-seq averages over all cells; it can't show whether persisters come from selection of pre-existing cells or from reprogramming.
-- **2026-09-30** The signature comes from pure tumour cells but is scored in bulk tumours, where stroma and tumour purity blur it.
+- **2026-09-30** The signature comes from pure tumor cells but is scored in bulk tumors, where stroma and tumor purity blur it.
 - **2026-09-30** TCGA-LUAD is mostly resected, osimertinib-naive disease with a minority of EGFR-mutant cases. The survival test asks whether the persister program tracks outcome in LUAD generally, not whether it predicts osimertinib response.
 - **2026-09-30** A survival association is not causation. The median split is for display only.
 - **2026-09-30** The salmon index has no decoy sequences, which can slightly inflate some counts.
